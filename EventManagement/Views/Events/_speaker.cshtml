@@ -1,0 +1,56 @@
+﻿<div id="speakers" class="tab-pane fade">
+    <br />
+    <button type="button" id="FetchSpearkerGServer" class="btn btn-primary">Resync Speakers</button>
+    <br />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Activities
+                </th>
+                <th>
+                    Image
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.Speakers as IEnumerable<EventManagement.DataAccess.DataBase.Model.Attende>)
+            {
+                <tr>
+                    <th>
+
+                        <input class="speaker" title="Checking in this will add selected speaker to event" data-id="@item.ID" @(((IEnumerable<EventManagement.DataAccess.DataBase.Model.AttendesEvent>)Model.AttendesEvents).Any(x => x.AttendesID == item.ID) ? "checked" : string.Empty) type="checkbox" name="Att-@item.ID" />
+                    </th>
+                    <td>
+                        @Html.Raw(@item.FirstName)
+                    </td>
+                    <td>
+                        @Html.Raw(@item.Description)
+
+                    </td>
+                    <td>
+                        <select data-id="@item.ID" class="control-label col-md-2 speakerActivity" multiple>
+                            @foreach (var activity in ViewBag.Activities as IEnumerable<EventManagement.DataAccess.DataBase.Model.Activite>)
+                            {
+                                <option @(activity.BookMarks.Any(x => x.AttendesID == item.ID) ? "selected" : "") value="@activity.ID">@activity.Name</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <img height="50" width="50" src="@MvcCustom.ImagePath(item.Thumbnail)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

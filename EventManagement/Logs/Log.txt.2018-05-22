@@ -1,0 +1,7 @@
+﻿2018-05-22 23:37:38,753 ERROR [53] CommonHelpers.Helpers.LogError - Login failed
+System.Exception: Invalid password
+   at EventManagement.BusinessLogic.Business.AuthLogic.<WebLogin>d__5.MoveNext() in C:\Users\Dell\Documents\GitHub\EventManagementPortal\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 46
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at EventManagement.Controllers.LoginController.<Login>d__1.MoveNext() in C:\Users\Dell\Documents\GitHub\EventManagementPortal\EventManagement\Controllers\LoginController.cs:line 29

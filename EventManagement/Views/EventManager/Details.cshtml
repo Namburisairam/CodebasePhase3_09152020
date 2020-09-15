@@ -1,0 +1,60 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Event
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+
+                            <h3 class="box-title">Event</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Edit", "Create", new { id = Model.ID }) |
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.EventName)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.GalacticEventId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.GalacticEventId)</h5>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ModeratePost, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.ModeratePost)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
+    </section>
+</div>

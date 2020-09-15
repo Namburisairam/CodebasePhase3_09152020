@@ -1,0 +1,245 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Event>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/sorttable.js"></script>
+@section Script{
+
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <script src="~/Scripts/CMSCommon.js"></script>
+    <script>
+        //var gei = $("#GalacticEventId").val();
+
+        $("#GalacticEventId").focusout(function () {
+            //if (!gei) {
+                $.ajax({
+                    url: '@Url.Content("/Events/CheckEventExist?id=")' + $("#GalacticEventId").val(),
+                    success: function (data) {
+                        if (data == true) {
+
+                            alert('Event Already Exist');
+                            $(':input[type="submit"]').prop('disabled', true);
+                        } else { $(':input[type="submit"]').prop('disabled', false); }
+                    }
+                });
+            //}
+        });
+        $('#formEvent').validate();
+        $('#formexcel').validate();
+    </script>
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div>
+                <b style="color: red">@TempData["error"]</b>
+            </div>
+            <div class="col-md-10">
+                <h2>All Events</h2>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-primary" data-toggle="modal" style="width:100%" data-target="#myModal">Create New</a>
+                @*<text class="btn btn-primary button" data-toggle="modal" data-target="#myModal">Create New</text>*@
+            </div>
+            @*<div class="col-md-2">
+                    <text class="btn btn-primary button" data-toggle="modal" data-target="#myModal1">Upload Events</text>
+                </div>*@
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                @*<div class="box-header with-border">*@
+                <table id="allEvents" class="table box box-primary ui-sortable-handle">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;">
+                                @*@Html.DisplayNameFor(model => model.EventName)*@
+                                @Html.Raw("Event Name")
+                            </th>
+                            <th style="cursor: pointer;">
+                                @*@Html.DisplayNameFor(model => model.GalacticEventId)*@
+                                @Html.Raw("Galactic EventId")
+                            </th>
+                            <th style="cursor: pointer">
+                                @*@Html.DisplayNameFor(model => model.ModeratePost)*@
+                                @Html.Raw("Moderate Post")
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GalacticEventId)
+                                </td>
+                                <td>
+
+                                    @if (item.ModeratePost != true)
+                                    {
+                                        <span>False</span>
+                                    }
+                                    else
+                                    {
+                                        <span>True</span>
+                                    }
+                                </td>
+                                <td class="textColor">
+                                     <a class="btn btn-warning" href='@Url.Action("Create", new { id = item.ID })'>Edit</a>
+                                    <text> </text>
+                                    <a class="btn btn-info" href='@Url.Action("Details", new { id = item.ID })'>Details</a>
+                                    <text> </text>
+                                    <a class="btn btn-warning" href='@Url.Action("DeleteEvents", new { id = item.ID })' onclick="return confirm('Are you sure you want to delete this item?. All the content will be deleted');">Delete</a>
+                                    <text> </text>
+                                    <a class="btn btn-info" href='@Url.Action("DuplicateEvent", new { id = item.ID })'>Replicate</a>
+
+                                    @*<text class="btn btn-warning"> @Html.ActionLink("Edit", "Create", new { id = item.ID })</text>
+                                    <text> </text>
+                                    <text class="btn btn-info">@Html.ActionLink("Details", "Details", new { id = item.ID }) </text>
+                                    <text> </text>
+                                    <text class="btn btn-warning">@Html.ActionLink("Delete", "DeleteEvents", new { id = item.ID }, new { @class = "btnDelete" }) </text>
+                                    <text> </text>
+                                    <text class="btn btn-info">@Html.ActionLink("Replicate", "DuplicateEvent", new { id = item.ID }) </text>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">New Event</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formEvent" action="@Url.Action("Create")" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="EventName">EventName</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="EventName" name="EventName" required="required" type="text" value="" />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="EventName" data-valmsg-replace="true"></span>
+                                <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="ID" name="ID" type="hidden" value="0" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="GalacticEventId">Galactic EventId</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" data-val="true" data-val-number="The field GalacticEventId must be a number." id="GalacticEventId" min="1" name="GalacticEventId" required="required" type="number" value="" maxlength="10" onkeypress="return isNumberKey(event)" />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="GalacticEventId" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Message">Message</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="Message" name="Message" type="text" value="">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Message" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="ManagerUserId">Manager</label>
+                            <div class="col-md-10">
+                                <select class="form-control" id="ManagerUserId" name="ManagerEvent.ManagerID">
+                                    @foreach (var item in ViewBag.ManagerUserList as List<EventManagement.DataAccess.DataBase.Model.Attende>)
+                                    {
+                                        <option value="@item.ID">@item.FirstName</option>
+                                    }
+                                </select>
+                            </div>
+                            @*<select name="CityId" class="js-example-basic-single js-states form-control" id="id_label_single">
+                @foreach (var item in ViewBag.ManagerUserList as List<TransportERP.DataAccess.GEO_City>)
+                {
+                    <option value="@item.Id" @(item.Id == Model.CityId ? "Selected" : "")>@item.Name</option>
+                }
+            </select>*@
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="ModeratePost">ModeratePost</label>
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <select name="ModeratePost">
+                                        <option selected="selected" value="">Not Set</option>
+                                        <option value="true">True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="ModeratePost" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input id="btnNewEventSubmit" type="submit" value="Create" class="btn btn-primary" onclick="btnNewEventClose.disabled = true" /> 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnNewEventClose" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">New Event</h4>
+            </div>
+            <div class="modal-body">
+                <form action="@Url.Action("EventsExcelFile")" id="formexcel" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="EventName">Excel File</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" name="file" required="required" type="file" value="" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "galactic-event-firebase",
+  "private_key_id": "11afdee023e0c510bc7c4a2b904f13b956908479",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDC5pUwBEpq6vBR\n0jFpeu9nNhv4dHzTFdyf66MOgN1dztXJc4IU+jsYs+nHXpbRMY+fl7D7u9QhK2e/\nm+O3s4iBeUIdLINU18lREnPVjvGGAss0VV4/kk8WnEbAwc8WHlje39z0yAiRwVF9\nWXLe7jaRQUXdvgbPneycLBmZem0lIVsz+uhhOH2dy6zF0VCm5OjtQcKO9KUAMY7u\nmkuohfFrml2oa361/9C5/d3SrVo8haT4dxn0XknW8l37M5yUu5982MSjJPJQi68+\nW6v8n7O9ieo5Thhsk507HBU60maWJz9cwtoHL3RJVTTbpL4vIoUgjKsnhC0B8J8O\nI4uQvleDAgMBAAECggEATYzsXc/HQKW8/AGT8bGd4saP+Jt5M5CmWeer2NCDxJjR\nTjgs0WYD779ezRqhDhoXWNxF6tSBArW/sWk5AdZpAYObP/p/Q1odW6no91fKWJVx\n/5/cQZVY7Nk/+eDkIpvuprgStj+F0WFHqIXYBEZq5f8/6ox7L09aX4XYpc4l8biS\nb6w3Qr39O6mfG7Pz4NtDVRZTJV3SnP8nEL6kKj+kw1kDM/j9GQm9A6tKMxSV5CAk\n8iOY8s86uKRb9ERPJnYVUeqXg5aBsbUGZwvj19RQ+6yVXVSNiJDQnMfqrxdUUHYb\ne+YLeu2ZG0nd5zFAAisUWb3MWLeSvt191OyPf4Ap6QKBgQD2dq7Sjpgoc1OVOJ4S\nwzChkGID048jSlL2xcVI83VsBKuKngSMo6/trgZHbQil8EaJvblXGmLvylPXa2Rm\nnze+HG0UVkptSs59cgOzVA0X/cNUqnIQU930OG6/m5diKAIFmqAJCtGXcoya+iBE\nEsG/gu1NFx7A0P3895+Fez0cfQKBgQDKcSZHwz2QMwz4Y5M8viSGgLgzFksMwuYp\nqNH6XSUHY99HTfEXQiR5qoycr6gNXHlKn6BFD631YFuvYoVIuMPIKpgvbfxsz7fp\nb5HBeDjVQfbauuPRYoBNeFvqtsMO9MrXHcNwkA3VXotUsIdcepJw9vxnLdag7x83\nKoJez2eD/wKBgQDHqmyEzdp84rky6XQ+FP0/1j1hhjGu0FaX7q6eJAXbpYjnOo7K\n9Qzgi5wwnydjb11l11rgMtM2Gf6ERU9IR/KbxGGmGSYglnrka8qNrCkTZ5Sn8ZGI\norjsUg9+kOk6Ltk8ewDtcmNLwxQftUUQgPWPVd0zF+jlIiqxllYYiDeA7QKBgG45\nS1F5cXSpBx/a/5jsInEFdsWCFtzc5Xq7S5DY1EeAzlpBispSHhAMl0Dct1CHEBdc\ncGQJ1Hqsu17z8oQU7ax33KK+bNlGA+na8G55qeAbaW/QoCgqTJdhuBJE7lGfYS3d\nK8OG+7E4J/61mw30QvW01NrM73Zym/lqcM90d/U7AoGBAO6GYlPbmG1GQpG6OOq8\n3pcGQo3JKi3IbwWv1KRhAjCZ8FySFc43DkXm1GULEtUaA5jTxn0uQi572d6CqBdq\n4GhQOZ2iqWeQbU01ZGMRIokj/K/DsRVDPMEU98mpUD2cY6OIdMRnKJ7ZPJfjdxRD\nOFBHyz/7UA63KguqBo2hHe11\n-----END PRIVATE KEY-----\n",
+  "client_email": "googledrive@galactic-event-firebase.iam.gserviceaccount.com",
+  "client_id": "117189510308011920727",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/googledrive%40galactic-event-firebase.iam.gserviceaccount.com"
+}

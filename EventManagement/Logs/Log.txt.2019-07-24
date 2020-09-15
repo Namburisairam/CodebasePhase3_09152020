@@ -1,0 +1,56 @@
+﻿2019-07-24 15:24:16,620 ERROR [8] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:29:47,750 ERROR [5] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:34:37,435 ERROR [7] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:40:14,048 ERROR [12] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:41:49,333 ERROR [23] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:44:03,754 ERROR [21] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 15:44:37,043 ERROR [12] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647
+2019-07-24 16:28:14,420 ERROR [6] CommonHelpers.Helpers.LogError - Event Error
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote server returned an error: (407) Proxy Authentication Required.
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 384
+   at EventManagement.Controllers.EventsController.<Create>d__39.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 647

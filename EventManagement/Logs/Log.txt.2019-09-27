@@ -1,0 +1,47 @@
+﻿2019-09-27 11:55:57,673 ERROR [7] CommonHelpers.Helpers.LogError - Login failed
+System.Exception: User not found
+   at EventManagement.BusinessLogic.Business.AuthLogic.<WebLogin>d__3.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 53
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.LoginController.<Login>d__1.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\LoginController.cs:line 30
+2019-09-27 14:45:01,663 ERROR [11] CommonHelpers.Helpers.LogError - API Error: 
+System.ArgumentException: Invalid JSON primitive: .
+   at System.Web.Script.Serialization.JavaScriptObjectDeserializer.DeserializePrimitiveObject()
+   at System.Web.Script.Serialization.JavaScriptObjectDeserializer.DeserializeInternal(Int32 depth)
+   at System.Web.Script.Serialization.JavaScriptObjectDeserializer.DeserializeDictionary(Int32 depth)
+   at System.Web.Script.Serialization.JavaScriptObjectDeserializer.DeserializeInternal(Int32 depth)
+   at System.Web.Script.Serialization.JavaScriptObjectDeserializer.BasicDeserialize(String input, Int32 depthLimit, JavaScriptSerializer serializer)
+   at System.Web.Script.Serialization.JavaScriptSerializer.Deserialize(JavaScriptSerializer serializer, String input, Type type, Int32 depthLimit)
+   at System.Web.Mvc.JsonValueProviderFactory.GetDeserializedObject(ControllerContext controllerContext)
+   at System.Web.Mvc.JsonValueProviderFactory.GetValueProvider(ControllerContext controllerContext)
+   at System.Web.Mvc.ValueProviderFactoryCollection.GetValueProvider(ControllerContext controllerContext)
+   at System.Web.Mvc.ControllerBase.get_ValueProvider()
+   at System.Web.Mvc.ControllerActionInvoker.GetParameterValue(ControllerContext controllerContext, ParameterDescriptor parameterDescriptor)
+   at System.Web.Mvc.ControllerActionInvoker.GetParameterValues(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__19(AsyncCallback asyncCallback, Object asyncState)
+2019-09-27 17:17:28,412 ERROR [13] CommonHelpers.Helpers.LogError - API Error: 
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at EventManagement.BusinessLogic.Business.AuthLogic.<AttendeVerifyEmail>d__9.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 143
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Areas.API.Controllers.AuthController.<VerifyEmail>d__2.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Areas\API\Controllers\AuthController.cs:line 57
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Mvc.Async.TaskAsyncActionDescriptor.EndExecute(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass37.<BeginInvokeAsynchronousActionMethod>b__36(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass33.<BeginInvokeActionMethodWithFilters>b__32(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)

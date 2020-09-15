@@ -1,0 +1,75 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Event>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+        //$('#formEvent').validate();
+        //$('#formexcel').validate();
+    </script>
+}
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>All Events</h2>
+            </div>           
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                @*<div class="box-header with-border">*@
+                <table class="table box box-primary">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.GalacticEventId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ModeratePost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Message)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GalacticEventId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ModeratePost)
+                                </td>
+                                <td>
+                                    @Html.Raw(item.Message)
+                                </td>
+                                <td class="textColor">
+                                    <text class="btn btn-warning"> @Html.ActionLink("Moderate", "Event", new { id = item.ID })</text>                                   
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+

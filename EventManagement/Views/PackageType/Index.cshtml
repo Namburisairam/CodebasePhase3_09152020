@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.UserPackageType>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/sorttable.js"></script>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>Package Types</h2>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-primary" style="width:100%" href='@Url.Action("Create")'>Create New</a>                
+            </div>
+            @*<div class="col-md-2">
+                    <text class="btn btn-primary button" data-toggle="modal" data-target="#myModal1">Upload Events</text>
+                </div>*@
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                @*<p>
+                        @Html.ActionLink("Create New", "Create")
+                    </p>*@
+                <table class="table ui-sortable-handle">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Packageorder)
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Packageorder)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" href='@Url.Action("Edit", new { id = item.ID })'>Edit</a>
+                                <text> </text>
+                                <a class="btn btn-warning" href='@Url.Action("DeletePackage", new { id = item.ID })' onclick="return confirm('Are you sure you want to delete this item?. All the content will be deleted');">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+

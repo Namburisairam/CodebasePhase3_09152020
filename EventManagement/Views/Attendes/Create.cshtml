@@ -1,0 +1,132 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Attende
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+
+    <script>       
+        $('form').validate();
+    </script>
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-12">
+                <h2>New Attendee</h2>
+            </div>
+        </div>
+    </section>*@
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+
+                            <h3 class="box-title">New Attendee</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+                        <form method="post" class="box-header box box-primary with-border" enctype="multipart/form-data" action="@Url.Action("Create")">
+
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => Model.ID)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <input type="file" name="thumbnail" @(Model.ID == 0 ? "required" : "")>
+                                        <img height="100" width="100" src="@MvcCustom.ImagePath(Model.Thumbnail)" />
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary">Facebook <big>#</big></button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="url" name="FacebookURL" value="@Model.FacebookURL" class="form-control social-url">
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-info">Twitter <big>#</big></button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="url" name="TwitterURL" value="@Model.TwitterURL" class="form-control social-url">
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-danger">Instagram <big>#</big></button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="url" name="InstagramURL" value="@Model.InstagramURL" class="form-control social-url">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Sponsor Events</label>
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            <select name="events" class="control-label col-md-2" multiple>
+                                                @foreach (var item in ViewBag.Events)
+                                                {
+                                                    <option @(Model.AttendesEvents.Any(x => x.EventID == item.ID) ? "selected" : "") value="@item.ID">@item.EventName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            @Html.EditorFor(model => model.Status)
+                                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="@(Model.ID > 0? "Update" : "Create")" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                </div>
+                <div>
+                    
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+      </div>
+</section>
+</div>

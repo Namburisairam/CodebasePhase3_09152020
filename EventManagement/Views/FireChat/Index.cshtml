@@ -1,0 +1,534 @@
+﻿
+@section Script{
+
+    <script src="~/Scripts/js/event-chat.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase-messaging.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCBVQoAGTG11qNhAOZATtflin_e6z1lTX4",
+            authDomain: "eventapp-768e5.firebaseapp.com",
+            databaseURL: "https://eventapp-768e5.firebaseio.com",
+            projectId: "eventapp-768e5",
+            storageBucket: "eventapp-768e5.appspot.com",
+            messagingSenderId: "784979102180",
+            appId: "1:784979102180:web:252a92e435b5ddf0579ff1",
+            measurementId: "G-7FT5LMMMS1"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script>
+
+        $(function(){
+            //var currentChannel;
+            var channelSelected;
+            var senderId;
+            //var currentChannelDOM;
+
+            $(document).ready(function() {
+                //console.log("ready!");
+                fillAttendee();
+                GetCurrentUserSession();
+                getUserChannels();
+            });
+
+           window.setInterval(function () {
+               getUserChannels();
+               //messsageGridLoad(channelSelected);
+            }, 2000);
+
+            function GetCurrentUserSession() {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetCurrentSessionUserId", "FireChat")',
+                    dataType: 'json',
+                    success: function(data) {
+                        senderId = data;
+                    }
+                });
+            }
+
+            function fillAttendee() {
+                var selectedEvent = $("#Event option:selected").val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventAttendees", "FireChat")',
+                    dataType: 'json',
+                    data: { EventID: selectedEvent },
+                    success: function(response) {
+                        var len = response.length;
+                        $("#Attendee").empty();
+                        for (var i = 0; i < len; i++) {
+                            var AttendeeId = response[i].AttendeeId;
+                            var AttendeeName = response[i].AttendeeName;
+                            $("#Attendee").append("<option value='" + AttendeeId + "'>" + AttendeeName + "</option>");
+                        }
+                    },
+                    error: function(error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+
+
+            function registerPushNotifications(channelId, Message) {
+                if (firebase && firebase.messaging()) {
+                    firebase.messaging().requestPermission().then(() => {
+                        firebase.messaging().getToken().then((fcmToken) => {
+
+                            $.ajax({
+                                type: 'GET',
+                                url: '@Url.Action("SendWebPushnotification", "FireChat")',
+                                dataType: 'json',
+                                data: {
+                                    Token: fcmToken,
+                                    Message: Message,
+                                    ChannelId: channelId
+                                },
+                                success: function(response) {
+                                }
+                            });
+
+                            //chatClient.setPushRegistrationId('fcm', fcmToken);
+                            //firebase.messaging().onMessage(payload => {
+
+                            //        var notificationOptions = {
+                            //                            //body: payload.data.twi_body,
+                            //                            //icon: payload.notification.icon,
+                            //                            //click_action: payload.notification.click_action
+                            //                          };
+                            //        new Notification('New message', notificationOptions);
+                            //});
+
+                        }).catch((err) => {
+                            var x = err;
+                        });
+                    }).catch((err) => {
+                        var x = 0;
+                    });
+                } else {
+                }
+            }
+
+            //function addContent(divName, content) {
+            //    document.getElementById(divName).innerHTML = content;
+            //}
+
+            function getUserChannels() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/FireChat/GetAdminChannels',
+                    //url: '@Url.Action("GetAdminChannels", "FireChat")',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        fillChannels(data);
+                        //    var len = response.length;
+                        //    for (var i = 0; i < len; i++)
+                        //    {
+                        //        addMessages(response[i]);
+                        //    }
+                    }
+                });
+
+                @*$.getJSON('@Url.Action("GetAdminChannels","FireChat")', {
+                }, fillChannels);*@
+            }
+
+            function fillChannels(channels) {
+                var $channelContainer = $('.channels');
+                $channelContainer.empty();
+
+                var len = channels.length;
+                for (var i = 0; i < len; i++)
+                {
+                    addChannel(channels[i], i);
+                }
+                //$('.channel-Name').eq(0).click();
+            };
+
+            function addChannel(channel, index) {
+                //var channelNameObj = _.filter(channel.attributes.GroupMembers, x => x.name !== 'Admin')[0];
+                //var channelNameFromDb = _.find(attendeeDetails, function (attendee) {
+                //    return attendee.ID === channelNameObj.id;
+                //});
+
+                var channelName = channel.ChannelName;
+                var uniqueName = channel.ChannelId;
+                var eventName = channel.EventName;
+
+                var $channelContainer = $('.channels');
+                var $channel = $('<div class="channel-Name">')
+                    .append($('<div class="name" id="channelmsg">').text(channelName))
+                    .append($('<div class="event-name" >').text('Event : ' + eventName)).data('channelID', uniqueName)
+                    .attr('dateUpdated', channel.ChannelLatestTime);
+                $channel.click(onChannelClick);
+                $channelContainer.append($channel);
+
+                addUnConsumedMessages(channel, $channel.find(".name"));
+                sortChannels();
+
+            }
+
+            function sortChannels() {
+                var channels = $('.channel-Name');
+
+                channels.sort(function (a, b) {
+                    return new Date(parseInt(($(b).attr('dateUpdated')).substr(6))) - new Date(parseInt(($(a).attr('dateUpdated')).substr(6)));
+                    });
+                channels.appendTo('.channels');
+            }
+            function onChannelClick() {
+                onChannelSelected.call(this);
+            };
+
+            function onChannelSelected() {
+                channelSelected = $(this).data().channelID;
+                messsageGridLoad(channelSelected);
+
+                //currentChannelDOM = $(this);
+                //currentChannelDOM.find('.badge').remove();
+                //getChannelByID(channel);
+                //currentChannelDOM.addClass("channel-selected");
+
+            };
+
+            function messsageGridLoad(channelSelected) {
+              if (channelSelected !== undefined) {
+                  $(this).find('.badge').remove();
+                $('.direct-chat-messages').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetMessagesByChannelId", "FireChat")',
+                    dataType: 'json',
+                    data: {
+                        channelId: channelSelected
+                    },
+                    success: function(response) {
+                        var len = response.length;
+                        for (var i = 0; i < len; i++) {
+                            addMessages(response[i]);
+                        }
+                    }
+                });
+               }
+            };
+
+            function addUnConsumedMessages(channel, channelDiv) {
+                channelDiv.find('.badge').remove();
+                var unreadMessageCount = channel.UnreadMessageCount;
+                if (unreadMessageCount > 0) {
+                    channelDiv.append(
+                        $('<span data-toggle="tooltip" title="' +
+                            unreadMessageCount +
+                            ' New Messages" class="badge bg-red">').text(unreadMessageCount));
+                }
+            }
+
+            $("#Event").change(function() {
+                fillAttendee();
+            });
+
+            $('#newUser').click(function() {
+                if (!$('#Attendee').val() || !$('#Event').val()) {
+                    return;
+                }
+                $.getJSON('@Url.Action("CreateNewWebConversation", "FireChat")',
+                    {
+                        ReceiverID: $('#Attendee').val(),
+                        EventID: $('#Event').val()
+                    },
+                    function(data) {
+                        channelSelected = data.channelID;
+                    });
+                fillMessages();
+
+            });
+
+            var $input = $('#chat-input');
+
+            $input.on('keydown',
+                function(e) {
+                    if (e.keyCode == 13) {
+                        sendMessage();
+                        fillMessages();
+                    }
+                });
+
+            $('#send').on('click',
+                function() {
+                    sendMessage();
+                });
+
+            $('#uploadchatbtn').on('click', function ()
+            {
+                $('#MchannelId').val(channelSelected);
+            });
+
+            function sendMessage() {
+                if ($input.val()) {
+                    $.ajax('@Url.Action("SendMessage", "FireChat")',
+                        {
+                            type: "GET",
+                            data: {
+                                chatMessage: $input.val(),
+                                channelId: channelSelected
+                            },
+                            success: function(response) {
+                                if (response === true) {
+                                    $input.val('');
+                                    fillMessages();
+                                }
+                            },
+                            global: true
+                        });
+                }
+            }
+
+            function getChannelDomByID(channelID) {
+                return _.filter($('.channel-Name'),
+                    function(dom) {
+                        return $(dom).data()["channelID"] === channelID;
+                    })[0];
+            }
+
+            function fillMessages() {
+                $('.direct-chat-messages').empty();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetChannelMessages", "FireChat")',
+                    dataType: 'json',
+                    data: {
+                        ReceiverID: $('#Attendee').val(),
+                        EventID: $('#Event').val(),
+                        ChannelId: channelSelected
+                    },
+                    success: function(response) {
+                        var len = response.length;
+                        for (var i = 0; i < len; i++) {
+                            addMessages(response[i]);
+                        }
+                    }
+                });
+            }
+
+
+            function getAttendeeDPs(channelID, success, failure) {
+                $.getJSON('@Url.Action("GetChannelImages", "FireChat")',
+                    {
+                        channelID: channelID
+                    },
+                    success,
+                    failure);
+            }
+
+            function addMessages(msg) {
+
+                var isRight = msg.userid == senderId;
+                var $messageContainer = $('<div>').addClass('direct-chat-msg');
+                if (isRight) {
+                    $messageContainer.addClass('right');
+                }
+                channelSelected = msg.channelid;
+
+                var parsedDate = new Date(parseInt(msg.sentdate.substr(6)));
+                var jsDate = new Date(parsedDate);
+
+                var $userDetails = $('<div>').addClass('direct-chat-info clearfix');
+                $userDetails.append($('<span/>').addClass('direct-chat-name pull-left').text(msg.sendername));
+                $userDetails.append($('<span/>').addClass('direct-chat-timestamp pull-right').text(jsDate));
+                $messageContainer.append($userDetails);
+                //$messageContainer.append($('<img class="direct-chat-img"  alt="message user image">').attr('src', (attendeeDpObj && attendeeDpObj.image) ? 'data:image/png;base64,' + attendeeDpObj.image : 'Content/NoImage.png'));
+                //console.log(msg);
+                if (msg.type != "Text")
+                {
+                    var chatImage = 'http://galtestmobapp.azurewebsites.net/ImageFile/' + msg.message;
+                    //var chatImage = '@MvcCustom.RootImagePath()' + '/' + msg.message;
+                    console.log(chatImage);
+                    //var $message = $()
+                    $messageContainer.append($('<img class="direct-chat-img" alt="message user image">').attr('src', chatImage));
+                    //$messagecontainer.append($('<img src="' + chatImage + '" width="100px" height="100px"/>'));
+                }
+                else
+                {
+                var $message = $('<div>').addClass('direct-chat-text').text(msg.message);
+                $messageContainer.append($message);
+                }
+
+                $('.direct-chat-messages').append($messageContainer);
+                var $chatWindow = $('.direct-chat-messages');
+                $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+            }
+        });
+
+    </script>
+
+}
+
+<style>
+    .flex {
+        display: flex;
+    }
+
+    .channels {
+        flex: 2 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        height: 500px;
+    }
+
+    .chat-container {
+        flex: 6 0;
+    }
+
+    .channel-Name {
+        min-height: 50px;
+        /*align-items: center;*/
+        font-weight: 600;
+        cursor: pointer !important;
+        /*display: flex;*/
+        border-bottom: 1px solid #e0dede;
+        padding-left: 10px;
+        flex-direction: column;
+    }
+
+        .channel-Name:hover {
+            background: white;
+            user-select: none;
+        }
+
+        .channel-Name .name {
+            margin-top: 3px;
+        }
+
+        .channel-Name .event-name {
+            font-size: 10px;
+            color: #8d8d90;
+            margin-top: 3px;
+        }
+
+
+    .channel-selected {
+        background: white;
+    }
+</style>
+
+<div class="content-wrapper ">
+    <div class="row" style="padding: 20px">
+        <br />
+        <div class="col-md-4" style="padding: 4px">
+            Event: @Html.DropDownList("EventID", new SelectList(ViewBag.events, "EventId", "EventName"), new { id = "Event" })
+        </div>
+        <div class="col-md-4" style="padding: 4px">
+            Attendee: <select name="AttendeeID" required id="Attendee"></select>
+        </div>
+        <button id="newUser" style="padding: 5px"> Chat </button>
+    </div>
+    <br />
+    <div class="flex">
+        <div class="channels" name="channels">
+            @*<div class="channel-Name"> Kelly gocke
+                <div class="event-name">Galactic Incentive2</div>
+                </div>*@
+
+
+            @*$('<div class="channel-Name">
+                ').append($('<div class="name">
+                    ').text(channelName)).append($('<div class="event-name">
+                        ').text( 'Event : ' + eventName)).data('channelID', uniqueName).attr('dateUpdated', channel.ChannelLatestTime);*@
+
+
+        </div>
+        <div class="box box-danger direct-chat direct-chat-danger chat-container" id="EventChat">
+            <div class="box-header with-border">
+                <h3 class="box-title">Chat</h3>
+                <h5 id="typePlaceHolder">  </h5>
+                <div class="box-tools pull-right">
+
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages" style="height: 365px">
+
+                </div>
+                <!--/.direct-chat-messages-->
+                <!-- Contacts are loaded here -->
+                <div class="direct-chat-contacts">
+                    <ul class="contacts-list">
+                        <li>
+                            <a href="#">
+                                <img class="contacts-list-img" src="../dist/img/user1-128x128.jpg" alt="Contact Avatar">
+                                <div class="contacts-list-info">
+                                    <span class="contacts-list-name">
+                                        Count Dracula
+                                        <small class="contacts-list-date pull-right">2/28/2015</small>
+                                    </span>
+                                    <span class="contacts-list-msg">How have you been? I was...</span>
+                                </div>
+                                <!-- /.contacts-list-info -->
+                            </a>
+                        </li>
+                        <!-- End Contact Item -->
+                    </ul>
+                    <!-- /.contatcts-list -->
+                </div>
+                <!-- /.direct-chat-pane -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="input-group">
+                    <input id="chat-input" type="text" name="message" placeholder="Type Message ..." class="form-control">
+                    <button type="button" data-toggle="modal" data-target="#uploadbtn" id="uploadchatbtn"> + </button>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger btn-flat" id="send">Send</button>
+                    </span>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="uploadbtn" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">image</h4>
+            </div>
+            <div class="modal-body">
+                <form id="uploafileform" action="@Url.Action("SendMessage","FireChat")" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+
+                    <input type="text" id="MchannelId" name="channelId" />
+
+                    <select Name="uploadtype" id="uploadtype">
+                        <option value="">--Select--</option>
+                        <option value="Photo">Photo</option>
+                        <option value="Video">Video</option>
+                        <option value="Document">Document</option>
+                    </select>
+
+                    <input type="file" name="uploadedImage" id="uploadedImage" />
+
+                    <input type="submit" value="Upload" />
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

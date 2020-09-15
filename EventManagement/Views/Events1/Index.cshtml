@@ -1,0 +1,135 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Event>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ModeratePost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GalacticEventId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EventName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableThemes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableActivity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableQrCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableAttendees)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableFloormap)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnablePhotos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableSponsor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableComments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableGoogleApi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.allow_bookmark)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EventImage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableSocialScreen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnableSearchScreen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppUser.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModeratePost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GalacticEventId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EventName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableThemes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableActivity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableQrCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableAttendees)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableFloormap)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnablePhotos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableSponsor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableComments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableGoogleApi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.allow_bookmark)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EventImage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableSocialScreen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnableSearchScreen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AppUser.FirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

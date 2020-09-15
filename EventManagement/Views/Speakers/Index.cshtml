@@ -1,0 +1,146 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Attende>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+}
+@section Script{
+    <script>
+        $('.gqrCode').click(function () {
+            linkEle = this;
+            $.ajax({
+                url: '@Url.Action("GenerateAttendeeQRCode","Attendee")/?attendeeId=' + $(this).attr("data-id"),
+                success: function (result) {
+                    parentEle = $(linkEle).parent();
+                    $(parentEle).append('<img src="@Url.Content("~/ImageFile")/' + result + '" height="50" width="50" />');
+                    $(linkEle).remove();
+                }
+            })
+        });
+    </script>
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>All Speakers</h2>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-primary" style="width:100%" href='@Url.Action("Create")'>Create New</a>
+            </div>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+
+
+
+            <div class="box box-primary">
+                @*<div class="box-header with-border">*@
+                <table class="table box box-primary">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </th>
+                            @*<th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.Lastname)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Thumbnail)
+                            </th>
+                            <th>
+                                QR Code
+                            </th>
+                            @*<th>
+                                    Qr Code
+                                </th>*@
+                                                    @*<th>
+                                    @Html.DisplayNameFor(model => model.DocURL)
+                                </th>*@
+                                                    @*<th>
+                                    @Html.DisplayNameFor(model => model.Status)
+
+                                </th>*@
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.Raw(item.FirstName)
+                            </td>
+                            <td>
+                                @Html.Raw(item.Lastname)
+                            </td>
+
+                            <td>
+                                @Html.Raw(item.Email)
+                            </td>
+                            @*<td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>*@
+                            <td>
+                                <img height="50" width="50" src="@MvcCustom.ImagePath(item.Thumbnail)" />
+                            </td>
+                            <td>
+                                @if (item.QRCodes.Any())
+                                {
+                                    <img height="50" width="50" src="@MvcCustom.ImagePath(item.QRCodes.FirstOrDefault().CodePath)" />
+                                }
+                                else
+                                {
+                                    <a data-id="@item.ID" class="gqrCode" href="#">GenerateQRCode</a>
+                                }
+                            </td>
+                            @*<td>
+            @Html.DisplayFor(modelItem => item.DocURL)
+        </td>*@
+                            @*<td>
+            @if (item.QRCodes.Any())
+            {
+                <img height="50" width="50" src="@MvcCustom.ImagePath(item.QRCodes.FirstOrDefault().CodePath)" />
+            }
+            else
+            {
+                <a data-id="@item.ID" class="gqrCode" href="#">GenerateQRCode</a>
+            }
+        </td>*@
+                            @*<td>
+
+            @if (item.Status != true)
+            {
+                <span>InActive</span>
+            }
+            else
+            {
+                <span>Active</span>
+            }
+        </td>*@
+                        <td class="textColor">
+                            <a class="btn btn-warning" href='@Url.Action("Create", new { id = item.ID })'>Edit</a>
+                            <text> </text>
+                            <a class="btn btn-info" href='@Url.Action("Details", new { id = item.ID })'>Details</a>
+                            <text> </text>
+                            <a class="btn btn-warning" href='@Url.Action("DeleteAttendee", new { id = item.ID })' onclick="return confirm('Are you sure you want to delete this item?. All the content will be deleted');">Delete</a>
+                        </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>

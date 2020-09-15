@@ -1,0 +1,27 @@
+﻿2019-11-05 11:45:08,605 ERROR [5] CommonHelpers.Helpers.LogError - Event Error
+The service drive has thrown an exception: Google.GoogleApiException: Google.Apis.Requests.RequestError
+User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329 [403]
+Errors [
+	Message[User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329] Location[ - ] Reason[userRateLimitExceeded] Domain[usageLimits]
+]
+
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 388
+   at EventManagement.Controllers.EventsController.<Create>d__49.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 949
+2019-11-05 11:45:08,605 ERROR [7] CommonHelpers.Helpers.LogError - Event Error
+The service drive has thrown an exception: Google.GoogleApiException: Google.Apis.Requests.RequestError
+User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329 [403]
+Errors [
+	Message[User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329] Location[ - ] Reason[userRateLimitExceeded] Domain[usageLimits]
+]
+
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 388
+   at EventManagement.Controllers.EventsController.<Create>d__49.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 949
+2019-11-05 11:45:08,605 ERROR [22] CommonHelpers.Helpers.LogError - Event Error
+The service drive has thrown an exception: Google.GoogleApiException: Google.Apis.Requests.RequestError
+User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329 [403]
+Errors [
+	Message[User Rate Limit Exceeded. Rate of requests for user exceed configured project quota. You may consider re-evaluating expected per-user traffic to the API and adjust project quota limits accordingly. You may monitor aggregate quota usage and adjust limits in the API Console: https://console.developers.google.com/apis/api/drive.googleapis.com/quotas?project=388419257329] Location[ - ] Reason[userRateLimitExceeded] Domain[usageLimits]
+]
+
+   at EventManagement.BusinessLogic.Business.GoogleDriveSync.CallApi(String jsonkeysfilepath, String filename) in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\GoogleDriveSync.cs:line 388
+   at EventManagement.Controllers.EventsController.<Create>d__49.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 949

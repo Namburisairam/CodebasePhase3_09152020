@@ -1,0 +1,1282 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Event
+@{
+    var activity = ViewBag.Activite as EventManagement.DataAccess.DataBase.Model.ActivityTPYE;
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var initialCropImage = string.Empty;
+    //var jsonstring = "";
+}
+@section Script{
+    <script src="@Url.Content("~/Scripts/Jcrop/js/jquery.Jcrop.js")"></script>
+    <link href="@Url.Content("~/Scripts/Jcrop/css/jquery.Jcrop.css")" rel="stylesheet" />
+    <script>
+
+
+
+        $(function () {
+            $("#afm").click(function () {
+                window.open('@Url.Action("FloormapDetails","events")/' + $('#MultiFloor').val(),'_blank');
+            });
+
+
+                            function LoadFloorMap() {
+                                var text1 = $('#MultiFloor :selected').text();
+                                var value = $('#MultiFloor').val();
+                                var image = $('#MultiFloor').find(':selected').data('image');
+                                console.log('@ViewBag.url' + image);
+                                $('.cropImage').attr('src', '');
+                                $('.cropImage').attr('src', '@ViewBag.url' + image);
+                            }
+                            LoadFloorMap();
+
+                            $('#MultiFloor').change(function () {
+                                LoadFloorMap();
+
+
+                            });
+
+                            $('.pop').on('click', function () {
+                                $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+                                $('#imagemodal').modal('show');
+                            });
+                            $('.Ephoto').on('click', function () {
+                                $('.imagepreview1').attr('src', $(this).find('img').attr('src'));
+                                $('#imagemodal1').modal('show');
+                            });
+                            $('.qr1').on('click', function () {
+                                $('.imagepreview2').attr('src', $(this).find('img').attr('src'));
+                                $('#imagemodal2').modal('show');
+                            });
+                        });
+
+
+
+              $(document).ready(function () {
+                 var _URL = window.URL || window.webkitURL;
+                $("#floorfile").change(function (e) {
+                var file, img;
+                if ((file = this.files[0])) {
+                    img = new Image();
+                    img.onload = function () {
+                         $('#fwidth').val(this.width);
+                         $('#fheight').val(this.height);
+                       // alert(this.width + " " + this.height);
+                    };
+                    img.src = _URL.createObjectURL(file);
+                }
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+      
+        });
+        //var photoId = 0;$(document).ready(function () {
+        //$(".clkimg").click(function () {
+        //photoId = $(this).attr('data-Photoid');
+        //if (confirm('Are you sure you want to Delete This Photo?'))
+        //{
+        //    $.ajax({
+        //    url: '/Events/DeleteEventPhotos?photoId='+photoId,
+        //    success: function (data){ }
+        //    });
+        //$(this).parents('#hidediv').fadeOut();
+        //}
+        //else {
+        //// Do nothing!
+        //}
+        //})
+        //;})
+        var photoId = 0; $(document).ready(function () {
+                            $(".deleteAlbum").click(function () {
+                                albumID = $(this).attr('data-Album-ID');
+                                if (confirm('Are you sure you want to Delete This Photo?')) {
+                                    $.ajax({
+                                        url: '@Url.Action("DeleteAlbum")?albumID=' + albumID,
+                                        type : 'POST',
+                                        success: function (data) {
+                                            if (!data) {
+                                                alert('something went wrong');
+                                            } else {
+
+                                                window.location.reload();
+                                            }
+
+                                        }
+                                    });
+
+                                }
+                                else {
+                                    // Do nothing!
+                                }
+                            });
+
+             $('.attendeeActivity').on('change', function(evt, params) {
+                   $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddBookMark", "EventManager")',
+                       dataType: 'json',
+                       data: { attendeeID: $(this).attr('data-id'), activities: ($(this).val() || [])  },
+                       success: function (data) {
+                          // $.notify('Activity has been assigned to attendee', 'success');
+                       },
+                       error: function () {
+                          // $.notify('Failed to add activity', 'warning');
+                       }
+                       });
+                 });
+
+                            $(".clkimg").click(function () {
+                                photoId = $(this).attr('data-Photoid');
+                                if (confirm('Are you sure you want to Delete This Photo?')) {
+                                    $.ajax({
+                                        url: '@Url.Action("DeleteEventPhotos")?photoId=' + photoId,
+                                        success: function (data) {
+                                            if (!data) {
+                                                alert('something went wrong');
+                                            } else {
+
+                                                $('#' + photoId).hide();
+                                            }
+
+                                        }
+                                    });
+
+                                }
+                                else {
+                                    // Do nothing!
+                                }
+                            });
+
+                            $('.approvedPhoto').click(function () {
+                                photoId = $(this).attr('data-Photoid');
+                                window.location.href = '@Url.Action("Create","Photo")?Id=' + photoId;
+                            });
+                            $('.albumPhotos').click(function () {
+                                albumID = $(this).attr('data-Album-ID');
+                                window.location.href = '@Url.Action("ViewAlbum","Photo")?Id=' + albumID;
+                            });
+
+
+                        })
+        if ('@ViewBag.Error' != '') {
+            alert('@ViewBag.Error')
+        }
+
+        $('#EForm').validate();
+        $('#aform').validate();
+        $('.date').datepicker();
+        $(function () {
+            'use strict';
+            // Change this to the location of your server-side upload handler:
+            var url = '@Url.Action("SaveEventImages","EventManager", new { Id = Model.ID })';
+            $('#fileupload').fileupload({
+                url: url,
+                dataType: 'json',
+                done: function (e, data) {
+                    //$.each(data.result.files, function (index, file) {
+                    //    $('<p/>').text(file.name).appendTo('#files');
+                    //});
+                    $('#PhotosView').load('@Url.Action("EventPhotosPartialView")/@Model.ID')
+                    //load images with partial view
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
+        $('#createActivity').click(function () {
+            $('#activityId').val('')
+            //var data = table.row($(this).parents('tr')).data();
+            $('#Description').val('');
+            $('#StartTime').val('');
+            $('#EndTime').val('');
+            $('#Address').val('');
+
+        })
+        $(document).ready(function () {
+            var table = $('#Activite').DataTable();
+            $('#Activite tbody').on('click', 'button', function () {
+                //alert($(this).attr('data-id'))
+                $('#activityId').val($(this).attr('data-id'))
+                var data = table.row($(this).parents('tr')).data();
+                $('#Description').val(data[0]);
+                $('#StartTime').val(data[2]);
+                $('#EndTime').val(data[3]);
+                $('#Address').val(data[4]);
+                console.log(data)
+                console.log('Data', data);
+            });
+            //var data = table
+            //    .rows()
+            //    .data();
+            //console.log('Data', data);
+        });
+
+
+
+
+        //$(function () {
+        //    $('#EditActivity').modal();
+        //});
+
+        //function editActivity(Id) {
+        //    $.ajax({
+        //        url: '/Events/CreateActivity/' + Id, // The method name + paramater
+        //        success: function (data) {
+        //            $('#modalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+        //        }
+        //    });
+        //}
+
+        $('.attendee').change(function () {
+            var cbox = this;
+            $.ajax({
+                url: '@Url.Action("AddRemoveAttendee")?eventId=' + @Model.ID + '&attendeeId=' + $(this).attr("data-id"),
+                success: function (result) {
+                    if (!result) {
+                        alert('something went wrong');
+                    } else {
+                        if ($(cbox).is(':checked'))
+                            $.notify('Attende added in event', 'success')
+                        else
+                            $.notify('Attende removed from event', 'warning')
+                    }
+                }
+            })
+        })
+
+        $('.approve').click(function () {
+            var id = $(this).attr("data-id")
+            $(this).removeAttr("data-id")
+            $(this).text('Approved');
+            if (id)
+                $.ajax({
+                    url: '@Url.Action("ApproveComment")/' + id,
+                    success: function (result) {
+                        if (result) {
+                            $.notify('Comment Approved', 'success')
+                            $(this).remove();
+                        }
+                        else
+                            alert('something went wrong');
+                    }
+                })
+            else
+                $.notify('Commment already Approved', 'success');
+        })
+
+        $('.sponsor').change(function () {
+            var cbox = this;
+            $.ajax({
+                url: '@Url.Action("AddRemoveSponsor")?eventId=' + @Model.ID + '&sponsorId=' + $(this).attr("data-id"),
+                success: function (result) {
+                    if (!result) {
+                        alert('something went wrong');
+                    } else {
+                        if ($(cbox).is(':checked'))
+                            $.notify('Sponsor added in event', 'success')
+                        else
+                            $.notify('Sponsor removed from event', 'warning')
+                    }
+                }
+            })
+        })
+
+        $('.gqrCode').click(function () {
+            linkEle = this;
+            $.ajax({
+                url: '@Url.Action("ActivityQrCode")/' + $(this).attr("data-id"),
+                success: function (result) {
+                    parentEle = $(linkEle).parent();
+                    $(parentEle).append('<img src="@Url.Content("~/ImageFile")/' + result + '" height="50" width="50" />');
+                    $(linkEle).remove();
+                }
+            })
+        })
+
+        $('.cropImage1').each(function () {
+                            $(this).Jcrop({
+                                //setSelect: [0, 0, 50, 50],
+                                //minSize: [50, 50],
+                                //maxSize: [50, 50],
+                                //aspectRatio: 50 / 50,
+                                //allowResize: false,
+                                onSelect: function (c) {
+                                    //console.log(this);
+                                    //var id = $('.jcrop-holder').siblings('.cropImage').attr('data-id')
+                                    var id = $('#MultiFloor').val();
+
+                                    $('[name=FMid]').val(id);
+                                    $('[name=x]').val(c.x);
+                                    $('[name=y]').val(c.y);
+                                    $('[name=height]').val(c.h);
+                                    $('[name=Width]').val(c.w);
+                                    $('#RegionComments').modal();
+                                },
+                            });
+                        })
+        $('.jcrop-holder1').click(function () {
+                            var id = $('#MultiFloor').val();
+                            //alert('Comment No' + id);
+                            $('[name=FMid]').val(id);
+                            var url = '@Url.Action("FloorMapComments")/' + id;
+                            $('#regionCommentsLoad').load(url);
+                        });
+    </script>
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+                            <h3 class="box-title">New Event</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+                    <form method="post" class="box-header box box-primary with-border" id="EForm" enctype="multipart/form-data" action="@Url.Action("Create")">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.EventName, string.Empty, new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.ID)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.GalacticEventId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.GalacticEventId, new { htmlAttributes = new { @class = "form-control", required = "required", @min = 1 } })
+                                    @Html.ValidationMessageFor(model => model.GalacticEventId, string.Empty, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Message, string.Empty, new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ManagerEvent.ManagerID, "ManagerUserId", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+
+                                    @Html.DropDownList("ManagerUserId", new SelectList(EventManagement.BusinessLogic.Business.AuthLogic.GetManagers(), "Id", "FirstName"), "Select Manager", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ManagerEvent.ManagerID, string.Empty, new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ModeratePost, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.ModeratePost, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ModeratePost, string.Empty, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Update" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <div class="container col-md-12 box box-primary">
+                        <section class="content-header">
+                            <div class="row topbar">
+                                <div class="col-md-8">
+                                    <h2>Event Informations Update</h2>
+                                </div>
+                            </div>
+                        </section>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#Activities">Activities</a></li>
+                            <li><a data-toggle="tab" href="#QrCode">QrCode</a></li>
+                            <li><a data-toggle="tab" href="#Attendees">Attendees</a></li>
+                            <li><a data-toggle="tab" href="#FloorMap">FloorMap</a></li>
+                            <li><a data-toggle="tab" href="#Photos">Photos</a></li>
+                            <li><a data-toggle="tab" href="#Sponsors">Sponsors</a></li>
+                            <li><a data-toggle="tab" href="#EventTheme">Event Theme</a></li>
+                            <li><a data-toggle="tab" href="#ApproveC">Comments ToApprove</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="Activities" class="tab-pane fade in active">
+
+                                <div class="col-md-4">
+                                    <button type="button" id="createActivity" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Activity">Create Activity</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table" id="Activite">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>
+                                                    Image
+                                                </th>
+                                                <th>
+                                                    Start Time
+                                                </th>
+                                                <th>
+                                                    Emd Time
+                                                </th>
+                                                <th>
+                                                    Address
+                                                </th>
+                                                <th>
+                                                    QRCode
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.Activities as List<EventManagement.DataAccess.DataBase.Model.Activite>)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.Description
+                                                    </td>
+                                                    <td>
+                                                        <img height="50" width="50" src="@MvcCustom.ImagePath(item.Thumbnail)" />
+                                                    </td>
+                                                    <td>
+                                                        @item.StartTime
+                                                    </td>
+                                                    <td>
+                                                        @item.EndTime
+                                                    </td>
+                                                    <td>
+                                                        @item.Address
+                                                    </td>
+                                                    <td>
+                                                        @if (item.QRCodes.Any())
+                                                        {
+                                                            <img height="50" width="50" src="@MvcCustom.ImagePath(item.QRCodes.FirstOrDefault().CodePath)" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <a data-id="@item.ID" class="gqrCode" href="#">GenerateQRCode</a>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @item.Status
+                                                    </td>
+                                                    <td class="textColor">
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Activity" data-id="@item.ID">Edit</button>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div id="QrCode" class="tab-pane fade">
+                                <div class="col-md-4">
+                                    <button type="button" id="createQrCode" class="btn btn-info btn-lg" data-toggle="modal" data-target="#QrCodeModel">Create QrCode</button>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                WebUrl
+                                            </th>
+                                            <th>
+                                                QrCode Image
+                                            </th>
+                                            <th>
+                                                Created On
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.QrCodes)
+                                        {
+                                            <tr>
+
+                                                <td>
+                                                    @item.Description
+                                                </td>
+                                                <td>
+                                                    <a href="@item.WebURL" target="_blank" title="@item.WebURL">Url</a>
+                                                </td>
+                                                <td>
+                                                    <img height="50" width="50" src="@MvcCustom.ImagePath(item.CodePath)" />
+                                                </td>
+                                                <td>
+                                                    @item.GeneratedON
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="Attendees" class="tab-pane fade">
+                                <br />
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Activities
+                                            </th>
+                                            <th>
+                                                Image
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                Bookmark
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Attendes)
+                                        {
+                                            <tr>
+                                                <th>
+
+                                                    <input class="attendee" data-id="@item.ID" @(Model.AttendesEvents.Any(x => x.AttendesID == item.ID) ? "checked" : string.Empty) type="checkbox" name="Att-@item.ID" />
+                                                </th>
+                                                <td>
+                                                    @item.FirstName
+                                                </td>
+                                                <td>
+                                                    @item.Description
+                                                </td>
+                                                <td>
+                                                    <select data-id="@item.ID" class="control-label col-md-2 attendeeActivity" multiple>
+                                                        @foreach (var activity1 in ViewBag.Activities as IEnumerable<EventManagement.DataAccess.DataBase.Model.Activite>)
+                                                        {
+                                                            <option @(activity1.BookMarks.Any(x => x.AttendesID == item.ID) ? "selected" : string.Empty) value="@activity1.ID">@activity1.Name</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <img height="50" width="50" src="@MvcCustom.ImagePath(item.Thumbnail)" />
+                                                </td>
+                                                <td>
+                                                    @item.Status
+                                                </td>
+                                                <td>
+                                                    <input class="attendee" data-id="@item.ID" @(Model.AttendesEvents.Any(x => x.AttendesID == item.ID) ? "checked" : string.Empty) type="checkbox" name="Att-@item.ID" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            @*<div id="FloorMap" class="tab-pane fade">
+            <h3>Upload Floor map Image</h3>
+            <form id="aform" action="@Url.Action("SaveFloorMap")" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    <input type="hidden" name="EventID" value="@Model.ID" />
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="Description">Description</label>
+                        <div class="col-md-10">
+                            <input class="form-control text-box single-line" id="floorfile" name="file" type="file" value="" required />
+                            <input id="fwidth" type="hidden" name="PhotoWidth" />
+                            <input id="fheight" type="hidden" name="PhotoHeight" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div id="PhotosView1">
+
+                @foreach (var item in Model.FloorMappings)
+                {
+                    <div class="row">
+                        <div class="col-md-2 spaceing">
+                            <img class="cropImage" data-id="@item.ID" src="@MvcCustom.ImagePath(item.PhotoURL)">
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>*@
+                            <div id="FloorMap" class="tab-pane fade">
+                                @*<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#DeleteFloormap">Delete Floor Maps</button>*@
+
+                                <h3>Upload Floor map Image</h3>
+                                <form id="aform" action="@Url.Action("SaveFloorMap")" method="post" enctype="multipart/form-data">
+                                    <div class="form-horizontal">
+                                        <input type="hidden" name="EventID" value="@Model.ID" />
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="Description">Description</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control text-box single-line" id="floorfile" name="file" type="file" value="" required />
+                                                <input id="fwidth" type="hidden" name="PhotoWidth" />
+                                                <input id="fheight" type="hidden" name="PhotoHeight" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">FloorMap Name</label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="FloorName" class="form-control" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Create" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">Select FloorMap</label>
+                                            <div class="col-md-6">
+                                                <select id="MultiFloor" class="form-control">
+                                                    @{int i = 0; int hf = 0, wf = 0, ffid = 0;}
+                                                    @foreach (var item in Model.FloorMappings)
+                                                    {
+                                                        if (i == 0)
+                                                        {
+                                                            initialCropImage = item.PhotoURL;
+                                                            hf = item.PhotoHeight.Value;
+                                                            wf = item.PhotoWidth.Value;
+                                                            ffid = item.ID;
+
+                                                        }
+                                                        <option value="@item.ID" data-image="@item.PhotoURL">@item.FloorName</option>
+                                                        i++;
+                                                    }
+                                                </select>
+                                            </div>
+                                            <input type="hidden" id="jstring" />
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <button type="button" id="afm" class="btn btn-info btn-lg">Configure Floor Maps</button>
+                                <div id="PhotosView1">
+
+
+                                    <div class="row">
+                                        <div class="col-md-2 spaceing">
+                                            <img class="cropImage" src="@ViewBag.url@initialCropImage" id="cropImage" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Photos" class="tab-pane fade">
+                                <div class="row spaceing">
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            <a href="@Url.Action("BatchDownload","Events",new { id = Model.ID})">
+                                                <span class="btn btn-success fileinput-button">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                    <span>All Download</span>
+
+                                                </span>
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="row spaceing form-horizontal">
+                                    @*<div class="col-md-4">
+                <label class="control-label"> Album </label>
+                <input type="checkbox" name="chkAlbum" id="albumCB" value="" />
+            </div>*@
+                                    @using (Html.BeginForm("CreateAlbum", "EventManager", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" value="@Model.ID" name="eventID" />
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2"> Album Name</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="albumName" id="albumText" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2"> Description</label>
+                                            <div class="col-md-6">
+                                                @Html.TextArea("AlbumDescription", htmlAttributes: new { @class = "form-control",Controller="EventManager", id = "AlbumDescription" })
+                                            </div>
+                                        </div>
+                                        <button type="submit" id="submitAlbum" class="btn btn-info col-md-offset-2">Submit</button>
+                                    }
+                                </div>
+                                <div class="underline"></div>
+                                <div class="row form-horizontal spaceing">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"> Select Album</label>
+                                        <div class="col-md-8">
+                                            @Html.DropDownList("AlbumID", new SelectList(Model.PhotoAlbums, "Id", "AlbumName"), "No Album", htmlAttributes: new { @class = "form-control", id = "AlbumID" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">Photo Description</label>
+                                        <div class="col-md-8">
+                                            @Html.TextArea("AlbumDescription", htmlAttributes: new { @class = "form-control", id = "AlbumDescription" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row spaceing">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-2">
+                                            <span class="btn btn-success fileinput-button">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <span>Select files...</span>
+                                                <!-- The file input field used as target for the file upload widget -->
+                                                <input id="fileupload" type="file" name="files[]" multiple>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div id="progress" class="progress spaceing">
+                                                <div class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="PhotosView">
+                                    <div class="row">
+                                        @foreach (var item in Model.PhotoAlbums.ToList())
+                                        {
+                                            <div class="col-md-2 spaceing" id="@item.ID" style="width:150px;height:150px">
+                                                <img data-Album-ID="@item.ID" class="deleteAlbum" src="@Url.Content("~/Content/dist/img/cross.png")" width="20" height="20" />
+                                                <div data-Album-ID="@item.ID" class="glyphicon glyphicon-folder-open albumPhotos" style="font-size:120px;"></div>
+                                                <div>@item.AlbumName</div>
+                                            </div>
+                                        }
+                                        @foreach (var item in Model.Photos.Where(x => x.Status == true && x.AlbumID == null).ToList())
+                                        {
+
+                                            <div class="col-md-2 spaceing" id="@item.ID">
+                                                <img data-Photoid="@item.ID" class="clkimg" src="@Url.Content("~/Content/dist/img/cross.png")" width="20" height="20" />
+                                                <img data-Photoid="@item.ID" class="approvedPhoto" width="150" height="150" src="@MvcCustom.ImagePath(item.URL)">
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="Sponsors" class="tab-pane fade">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Image
+                                            </th>
+                                            <th>
+                                                Document
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Sponsers)
+                                        {
+                                            <tr>
+                                                <th>
+                                                    <input class="sponsor" data-id="@item.ID" @(Model.SponsorsEvents.Any(x => x.SponsorID == item.ID) ? "checked" : string.Empty) type="checkbox" name="Att-@item.ID" />
+                                                </th>
+                                                <td>
+                                                    @Html.Raw(item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Description)
+                                                </td>
+                                                <td>
+                                                    <img height="50" width="50" src="@MvcCustom.ImagePath(item.Thumbnail)" />
+                                                </td>
+                                                <td>
+                                                    @item.DocURL
+                                                </td>
+                                                <td>
+                                                    @item.Status
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="EventTheme" class="tab-pane fade">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Theme" @(Model.Themes.Any(x => x.EventID == Model.ID) ? "disabled" : string.Empty)>Create Theme</button>
+                                </div>
+                                <table class="table">
+
+                                    <tr>
+                                        <th>
+                                            SplashScreen
+                                        </th>
+                                        <th>
+                                            AppBackground
+                                        </th>
+                                        <th>
+                                            Button
+                                        </th>
+                                        <th>
+                                            ButtonBackground
+                                        </th>
+                                        <th>
+                                            ButtonForeground
+                                        </th>
+                                        <th>
+                                            LabelForeground
+                                        </th>
+                                        <th>
+                                            HeadingForeground
+                                        </th>
+                                        <th>
+                                            MenuText
+                                        </th>
+                                        <th>
+                                            MenuBackground
+                                        </th>
+                                        <th>
+                                            ContentBackground
+                                        </th>
+                                        <th>
+                                            LinkText
+                                        </th>
+                                        <th>
+                                            Actions
+                                        </th>
+                                    </tr>
+
+                                    <tbody>
+                                        @foreach (var item in ViewBag.Themes)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <img height="50" width="50" src="@MvcCustom.ImagePath(item.SplashScreemURL)" />
+                                            </td>
+                                            <td>
+                                                <img height="50" width="50" src="@MvcCustom.ImagePath(item.AppBackgroundURL)" />
+                                            </td>
+                                            <td>
+                                                <img height="50" width="50" src="@MvcCustom.ImagePath(item.ButtonURL)" />
+                                            </td>
+                                            <td>
+                                                @item.ButtonBackgroundColor
+                                            </td>
+                                            <td>
+                                                @item.ButtonForegroundColor
+                                            </td>
+                                            <td>
+                                                @item.LabelForegroundColor
+                                            </td>
+                                            <td>
+                                                @item.HeadingForegroundColor
+                                            </td>
+                                            <td>
+                                                @item.MenuText
+                                            </td>
+                                            <td>
+                                                @item.MenuBackground
+                                            </td>
+                                            <td>
+                                                @item.ContentBackground
+                                            </td>
+                                            <td>
+                                                @item.LinkText
+                                            </td>
+                                            <td class="textColor">
+                                                <text class="btn btn-warning"> @Html.ActionLink("Delete", "DeleteTheme", new { id = item.ID })</text>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="ApproveC" class="tab-pane fade">
+                                <div class="col-md-4">
+
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+
+                                            <th>
+                                                Attendee
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Image
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.EventComments)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Attende.FirstName  
+                                                </td>
+                                                <td>
+                                                    @item.Description
+                                                </td>
+                                                <td>
+                                                    <img height="50" width="50" src="@MvcCustom.ImagePath(item.URL)" />
+                                                </td>
+                                                <td>
+                                                    @(item.Status == true ? "Approved" : "Pending Approval")
+                                                </td>
+                                                <td>
+                                                    @if (!(item.Status == null) && item.Status == true)
+                                                    {
+                                                        <a href="#" class="approve" data-id="@item.ID">Pending</a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </section>
+</div>
+
+
+
+<!--Activity Modal-->
+<div class="modal fade" id="Activity" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Activity</h4>
+            </div>
+            <div class="modal-body">
+                <form id="aform" action="@Url.Action("CreateActivity")" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <input type="hidden" name="EventID" value="@Model.ID" />
+                        <input type="hidden" id="activityId" name="ID" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Description">Description</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="Description" name="Description" type="text" value="" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Thumbnail</label>
+                            <div class="col-md-10">
+                                <input class="control-label " type="file" name="thumbnail" @(Model.ID == 0 ? "required" : "required`")>
+                                <img height="100" width="100" src="@MvcCustom.ImagePath(string.Empty)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="StartTime">StartTime</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line date" data-val="true" data-val-date="The field StartTime must be a date." data-val-required="The StartTime field is required." id="StartTime" name="StartTime" type="datetime" value="" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="StartTime" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="EndTime">EndTime</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line date" data-val="true" data-val-date="The field EndTime must be a date." data-val-required="The EndTime field is required." id="EndTime" name="EndTime" type="datetime" value="" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="EndTime" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Address">Address</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="Address" name="Address" type="text" value="" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Address" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Status">Status</label>
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <select class="list-box tri-state" id="Status" name="Status">
+                                        <option selected="selected" value="">Not Set</option>
+                                        <option value="1">True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="Status" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="ActivityTypeid">ActivityTypeid</label>
+                            <div class="col-md-10">
+                                <select class="form-control" id="ActivityTypeid" name="ActivityTypeid">
+                                    @foreach (var item in ViewBag.ActivityTypeid)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="ActivityTypeid" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Event Theme Modal-->
+<div class="modal fade" id="Theme" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Theme</h4>
+            </div>
+            <div class="modal-body">
+                <form id="aform" action="@Url.Action("CreateTheme")" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <input type="hidden" name="EventID" value="@Model.ID" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="SplashScreemURL">SplashScreemURL</label>
+                            <div class="col-md-6 nospacing">
+                                <input type="file" name="SplashScreem" @(Model.ID == 0 ? "required" : string.Empty)>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="AppBackgroundURL">AppBackgroundURL</label>
+                            <div class="col-md-6 nospacing">
+                                <input type="file" name="AppBackground" @(Model.ID == 0 ? "required" : string.Empty)>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="ButtonURL">ButtonURL</label>
+                            <div class="col-md-6 nospacing">
+                                <input type="file" name="Button" @(Model.ID == 0 ? "required" : string.Empty)>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="ButtonBackgroundColor">ButtonBackgroundColor</label>
+                            <div class="col-md-6 input-group colorpicker-component" id="bbc">
+                                <input type="text" class="form-control" name="ButtonBackgroundColor" />
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="ButtonForegroundColor">ButtonForegroundColor</label>
+                            <div class="col-md-6 input-group colorpicker-component" id="bfc">
+                                <input type="text" class="form-control" name="ButtonForegroundColor" />
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="LabelForegroundColor">LabelForegroundColor</label>
+                            <div class="col-md-6 input-group colorpicker-component" id="lfc">
+                                <input type="text" class="form-control" name="LabelForegroundColor" />
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4" for="HeadingForegroundColor">HeadingForegroundColor</label>
+                            <div class="col-md-6 input-group colorpicker-component" id="hfc">
+                                <input type="text" class="form-control" name="HeadingForegroundColor" />
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">HeadingForegroundColor</label>
+                            <div class="col-md-6">
+                                <textarea name="Message"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Event QrCode Modal-->
+<div class="modal fade" id="QrCodeModel" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Qrcode</h4>
+            </div>
+            <div class="modal-body">
+                <form id="aform" action="@Url.Action("CreateQrCode")" method="post">
+                    <div class="form-horizontal">
+                        <input type="hidden" name="EventID" value="@Model.ID" />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">WebUrl</label>
+                            <div class="col-md-6 nospacing">
+                                <input type="url" name="WebUrl" required>
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                                <label class="control-label col-md-4">Activity</label>
+                                <div class="col-md-6 nospacing">
+                                    <select name="ActivityId">
+                                        @foreach (var item in Model.Activites)
+                                        {
+                                            <option value="@item.ID">@item.Description</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>*@
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Description</label>
+                            <div class="col-md-6">
+                                <textarea name="Description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="RegionComments" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Region Comments</h4>
+            </div>
+            <div class="modal-body">
+                <form id="aform" action="@Url.Action("FloorMapComment")" method="post">
+                    <div class="form-horizontal">
+                        <input type="hidden" name="EventID" value="@Model.ID" />
+                        <input type="hidden" name="FMid" />
+                        <input type="hidden" name="x" />
+                        <input type="hidden" name="y" />
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Description</label>
+                            <div class="col-md-6">
+                                <textarea name="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="regionCommentsLoad"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿2018-10-11 23:45:43,109 ERROR [113] CommonHelpers.Helpers.LogError - Login failed
+System.Exception: User not found
+   at EventManagement.BusinessLogic.Business.AuthLogic.<WebLogin>d__5.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 46
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.LoginController.<Login>d__1.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement\Controllers\LoginController.cs:line 30
+2018-10-11 23:48:59,220 ERROR [112] CommonHelpers.Helpers.LogError - Login failed
+System.Exception: Invalid password
+   at EventManagement.BusinessLogic.Business.AuthLogic.<WebLogin>d__5.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 49
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.LoginController.<Login>d__1.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement\Controllers\LoginController.cs:line 30

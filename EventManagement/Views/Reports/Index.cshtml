@@ -1,0 +1,852 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.TextChat>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Script{
+
+<script src="~/Scripts/ExcelDownload/jquery-3.3.1.js"></script>
+<script src="~/Scripts/ExcelDownload/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/ExcelDownload/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/ExcelDownload/buttons.flash.min.js"></script>
+<script src="~/Scripts/ExcelDownload/jszip.min.js"></script>
+<script src="~/Scripts/ExcelDownload/pdfmake.min.js"></script>
+<script src="~/Scripts/ExcelDownload/vfs_fonts.js"></script>
+<script src="~/Scripts/ExcelDownload/buttons.html5.min.js"></script>
+@*<script src="~/Scripts/ExcelDownload/buttons.print.min.js"></script>*@
+
+<link href="~/Scripts/ExcelDownload/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Scripts/ExcelDownload/buttons.dataTables.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/sorttable.js"></script>
+<script src="~/Scripts/CMSCommon.js"></script>
+
+<script>
+
+    $(document).ready(function ()
+    {
+        $('#adminChatTable').DataTable({
+            dom: 'Bfrtip',
+            title: '',
+             buttons: [
+                 'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Admin Chat Report',
+                        filename: function () {
+                            return'Admin Chat Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Admin Chat Report',
+                        filename: function () {
+                            return'Admin Chat Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Admin Chat Report',
+                        filename: function () {
+                            return'Admin Chat Report';
+                        }
+                    }
+                ]
+         });
+
+        $('#appDownloadsTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                    extend: 'excelHtml5',
+                    //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Downloads Report',
+                        filename: function () {
+                            return'App Downloads Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Downloads Report',
+                        filename: function () {
+                            return'App Downloads Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Downloads Report',
+                        filename: function () {
+                            return'App Downloads Report';
+                        }
+                    }
+                ]
+         });
+
+        $('#participantsMessagesTable').DataTable({
+             dom: 'Bfrtip',
+             buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Participants Messages Report',
+                        filename: function () {
+                            return'Participants Messages Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Participants Messages Report',
+                        filename: function () {
+                            return'Participants Messages Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Participants Messages Report',
+                        filename: function () {
+                            return'Participants Messages Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#surveyReportsEventTable').DataTable({
+             dom: 'Bfrtip',
+             buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Report',
+                        filename: function () {
+                            return'Survey Reports Event Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Report',
+                        filename: function () {
+                            return'Survey Reports Event Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Report',
+                        filename: function () {
+                            return'Survey Reports Event Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#surveyReportsAppTable').DataTable({
+             dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports App Report',
+                        filename: function () {
+                            return'Survey Reports App Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports App Report',
+                        filename: function () {
+                            return'Survey Reports App Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports App Report',
+                        filename: function () {
+                            return'Survey Reports App Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#surveyReportsActivityTable').DataTable({
+             dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Activity Report',
+                        filename: function () {
+                            return'Survey Reports Activity Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Activity Report',
+                        filename: function () {
+                            return'Survey Reports Activity Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Survey Reports Activity Report',
+                        filename: function () {
+                            return'Survey Reports Activity Report';
+                        }
+                    }
+                ]
+         });
+
+        $('#topSavedActivitiesTable').DataTable({
+             dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Saved Activities Report',
+                        filename: function () {
+                            return'Top Saved Activities Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Saved Activities Report',
+                        filename: function () {
+                            return'Top Saved Activities Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Saved Activities Report',
+                        filename: function () {
+                            return'Top Saved Activities Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#appUsageTable').DataTable({
+             dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Usage Report',
+                        filename: function () {
+                            return'App Usage Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                       //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Usage Report',
+                        filename: function () {
+                            return'App Usage Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'App Usage Report',
+                        filename: function () {
+                            return'App Usage Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#topVisitedPagesTable').DataTable({
+             dom: 'Bfrtip',
+             buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Visited Pages Report',
+                        filename: function () {
+                            return'Top Visited Pages Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Visited Pages Report',
+                        filename: function () {
+                            return'Top Visited Pages Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Top Visited Pages Report',
+                        filename: function () {
+                            return'Top Visited Pages Report';
+                        }
+                    }
+                ]
+        });
+
+        $('#downloadPhotosTable').DataTable({
+             dom: 'Bfrtip',
+            buttons: [
+                    'copy',
+                    {
+                        extend: 'excelHtml5',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Downloaded Photos Report',
+                        filename: function () {
+                            return'Downloaded Photos Report';
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Downloaded Photos Report',
+                        filename: function () {
+                            return'Downloaded Photos Report';
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        //messageTop: 'The information in this table is copyright to Galactic.',
+                        title:'Downloaded Photos Report',
+                        filename: function () {
+                            return'Downloaded Photos Report';
+                        }
+                    }
+                ]
+        });
+
+     });
+
+        $(function () {
+            $("#date1").datepicker();
+            $("#date2").datepicker();
+            $("#Startdate").datepicker();
+            $("#Enddate").datepicker();
+
+            $('#myTab a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+            // store the currently selected tab in the hash value
+            $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+                var id = $(e.target).attr("href").substr(1);
+                window.location.hash = id;
+            });
+            var hash = window.location.hash;
+            $('#myTab a[href="' + hash + '"]').tab('show');
+        });
+    </script>
+
+ }
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>All Reports</h2> <br>
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a data-toggle="tab" href="#AdminChat">Admin Chat</a></li>
+                    <li><a data-toggle="tab" href="#AppDownloads">App Downloads</a></li>
+                    <li><a data-toggle="tab" href="#DownloadPhotos">Download Photos</a></li>
+                    <li><a data-toggle="tab" href="#SurveyReports">Survey Reports</a></li>
+                    <li><a data-toggle="tab" href="#AppUsage">App Usage</a></li>
+                    <li><a data-toggle="tab" href="#TopVisitedPages">Top Visited Pages</a></li>
+                    <li><a data-toggle="tab" href="#TopSavedActivities">Top Saved Activities</a></li>
+                    <li><a data-toggle="tab" href="#ParticipantsMessages">Participants Messages</a></li>
+                </ul>
+            </div>
+            <br />
+        </div>
+        <div class="tab-content">
+
+            <div id="AdminChat" class="tab-pane fade in active">
+
+                <form method="post" enctype="multipart/form-data" action="@Url.Action("Index","Reports")">
+                    <br />
+                    <p>@Html.DropDownList("AdminName", (IEnumerable<SelectListItem>)ViewBag.AdminNames) <br /></p>
+                    <p>
+                        <b>From Date:</b> <input type="text" id="Startdate" name="Startdate" />&nbsp;&nbsp;
+                        <b>To Date:</b> <input type="text" id="Enddate" name="Enddate" />&nbsp;&nbsp;
+                    </p> <br />
+                    <input type="submit" class="btn btn-primary" id="Filteradminchat" />
+                </form>
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="adminChatTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("Sender Name")
+                                        </th>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("Receiver Name")
+                                        </th>
+                                        <th>
+                                            @Html.Raw("Text Message")
+                                            @*@Html.DisplayNameFor(model => model.TextMessage)*@
+                                        </th>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("Create Date")
+                                            @*@Html.DisplayNameFor(model => model.Createdate)*@
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.TextChat as List<EventManagement.DataAccess.DataBase.Model.TextChat>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.Attende1 == null)
+                                                {
+                                                    @Html.Raw(item.Attende.FirstName) @Html.Raw("(Admin)")
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(item.Attende1.FirstName)
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.ReceiverID != null)
+                                                {
+                                                    @Html.Raw(item.Attende.FirstName)
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("Admin Group")
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.TextMessage)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.Createdate)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="AppDownloads" class="tab-pane fade">
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="appDownloadsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("#")
+                                        </th>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("User Name")
+                                        </th>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("Download Date")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.AppDownloads ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.AppDownload>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.ID)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.UserName)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.DownloadDate)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="ParticipantsMessages" class="tab-pane fade">
+                <form method="post" enctype="multipart/form-data" action="@Url.Action("GetMessagesbyUser","Reports")">
+                    <br />
+                    <p><b>Attendee :</b>@Html.DropDownList("Sender Name", (IEnumerable<SelectListItem>)ViewBag.AttendeeList) <br /></p>
+                    <p>
+                        <b>From Date:</b> <input type="text" id="date1" name="date1" />&nbsp;&nbsp;
+                        <b>To Date:</b> <input type="text" id="date2" name="date2" />&nbsp;&nbsp;
+                    </p> <br />
+                    <input type="submit" class="btn btn-primary" />
+                </form>
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <table class="table box box-primary ui-sortable-handle" id="participantsMessagesTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Sender Name")
+                                        </th>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Receiver Name")
+                                        </th>
+                                        <th>
+                                            @Html.Raw("Text Message")
+                                            @*@Html.DisplayNameFor(model => model.TextMessage)*@
+                                        </th>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Create Date")
+                                            @*@Html.DisplayNameFor(model => model.Createdate)*@
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in ViewBag.UserMessages ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.TextChat>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.Attende1 == null)
+                                                {
+                                                    @Html.Raw(item.AppUser.FirstName) @Html.Raw("(Admin)")
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(item.Attende1.FirstName)
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.ReceiverID != null)
+                                                {
+                                                    @Html.Raw(item.Attende.FirstName)
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("Admin Group")
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.TextMessage)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.Createdate)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="SurveyReports" class="tab-pane fade">
+                <form method="post" enctype="multipart/form-data" action="@Url.Action("GetSurveyReports","Reports")">
+                    <br />
+                    <select Name="SelectLevel" id="SelectLevel">
+                        <option value="">--Select--</option>
+                        <option value="Event">Event</option>
+                        <option value="App">App</option>
+                        <option value="Activity">Activity</option>
+                    </select>
+                    <br />
+                    <b>Event :</b> <select class="form-control SelectEvent" name="SelectEvent" id="SelectEvent">
+                        <option value="">-Select-</option>
+                        @foreach (var item in ViewBag.Events as IEnumerable<EventManagement.BusinessLogic.Models.EventSurveyData>)
+                        {
+                            <option value="@item.EventID"> @item.EventName</option>
+                        }
+                    </select> <br />
+                    <input type="submit" class="btn btn-primary" />
+                </form>
+
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            @if (ViewBag.Level == "Event")
+                            {
+                                <table class="table box box-primary ui-sortable-handle" id="surveyReportsEventTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Question")
+                                            </th>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Responses")
+                                            </th>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Count")
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.QuestionResponses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.Raw(item.Question)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Responses)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Count)
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+
+                                </table>
+                            }
+                            @if (ViewBag.Level == "App")
+                            {
+                                <table class="table box box-primary" id="surveyReportsAppTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Question")
+                                            </th>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Average Rating")
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.QuestionResponses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.Raw(item.Question)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Average)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            @if (ViewBag.Level == "Activity")
+                            {
+                                <table class="table box box-primary" id="surveyReportsActivityTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Question")
+                                            </th>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Responses")
+                                            </th>
+                                            <th style="cursor:pointer">
+                                                @Html.Raw("Count")
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.QuestionResponses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.Raw(item.Question)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Responses)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw(item.Count)
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="TopSavedActivities" class="tab-pane fade">
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="topSavedActivitiesTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Activity Name")
+                                        </th>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Users Count")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.TopSavedActivities ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.BookMark>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.count)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="AppUsage" class="tab-pane fade">
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="appUsageTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Device")
+                                        </th>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Usage Count")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.Appusage ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.UserSession>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.Platform)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.count)
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="TopVisitedPages" class="tab-pane fade">
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="topVisitedPagesTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Page Name")
+                                        </th>
+                                        <th style="cursor:pointer">
+                                            @Html.Raw("Users Count")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.TopVisitedPages ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.Sys_Log>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.Page)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.count)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="DownloadPhotos" class="tab-pane fade">
+                <br />
+                <section class="content">
+                    <div class="row spaceing">
+                        <div class="box box-primary">
+                            <br />
+                            <table class="table box box-primary ui-sortable-handle" id="downloadPhotosTable">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("User Name")
+                                        </th>
+                                        <th style="cursor: pointer;">
+                                            @Html.Raw("Download Count")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.DownloadPhotos ?? Html.Raw("&nbsp;") as List<EventManagement.DataAccess.DataBase.Model.Sys_Log>)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.Raw(item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.Raw(item.count)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+

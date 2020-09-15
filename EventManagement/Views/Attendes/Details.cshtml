@@ -1,0 +1,116 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Attende
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div>
+                <h4>Attende</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Thumbnail)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Thumbnail)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FacebookURL)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.FacebookURL)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TwitterURL)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TwitterURL)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.InstagramURL)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.InstagramURL)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddedON)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddedON)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddedBY)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddedBY)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Status)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DeviceToken)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.DeviceToken)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>                
+                @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+            </div>
+        </section>
+</div>

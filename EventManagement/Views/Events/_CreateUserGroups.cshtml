@@ -1,0 +1,53 @@
+﻿<div id="UserGroups" class="tab-pane fade ">
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <input type="button" data-event="@Model.ID" id="resyncUserGroups" value="Resync Groups" class="btn btn-primary" />
+        </div>
+        <div class="col-md-2">
+
+            <a class="btn btn-primary" style="width:100%" href='@Url.Action("Create", "UserEvents", routeValues: new { eventID = Model.ID })'>Create New</a>
+            @*@Html.ActionLink("Create Group", "Create", "UserEvents", routeValues: new { eventID = Model.ID }, htmlAttributes: new { @class = "btn btn-warning" })*@
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table" id="Activite">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in Model.GroupInfoes as IEnumerable<EventManagement.DataAccess.DataBase.Model.GroupInfo>)
+                {
+                    <tr>
+                        <td>
+                            @group.GroupName
+                        </td>
+                        <td>
+                            @group.GroupDescription
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href='@Url.Action("Create", "UserEvents", routeValues: new { id = group.ID, eventID = Model.ID })'>Edit</a>
+                            <text> </text>
+                            <a class="btn btn-warning" href='@Url.Action("DeleteUser", "UserEvents", routeValues: new { id = group.ID, eventID = Model.ID })' onclick="return confirm('Are you sure you want to delete this item?. All the content will be deleted');">Delete</a>
+
+                            @*@Html.ActionLink("Edit", "Create", "UserEvents", routeValues: new { id = group.ID, eventID = Model.ID }, htmlAttributes: new { @class = "btn btn-warning" })
+                                @Html.ActionLink("Delete", "Delete", "UserEvents", routeValues: new { id = group.ID, eventID = Model.ID }, htmlAttributes: new { @class = "btn btn-Warning" })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

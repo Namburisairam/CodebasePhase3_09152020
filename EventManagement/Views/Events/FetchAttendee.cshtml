@@ -1,0 +1,64 @@
+﻿
+
+<table class="table">
+
+    <tr>
+        <th>
+            Action
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Linkedin URL
+        </th>
+
+
+    </tr>
+
+    <tbody>
+        @foreach (var items in ViewBag.a)
+        {
+            <tr>
+                @if (items.UserSessions.Count != 0)
+                {
+                    <td>
+                        <div class="control-label">
+                            <input type="checkbox" name="Attendes" id="check_id" value="@items.ID" checked />
+                        </div>
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:lightgrey;">
+                        <div class="control-label">
+                            <input type="checkbox" class="" data-toggle="tooltip" title="Need One time Login From App To Perform This Action" name="Attendes" id="check_id" value="@items.ID" disabled />
+                        </div>
+                    </td>
+                }
+
+
+
+
+
+                <td>
+                    @items.Name
+                </td>
+                <td>
+                    @items.Email
+                </td>
+                <td>
+                    @items.LinkedinURL
+                </td>
+
+
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>

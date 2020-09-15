@@ -1,0 +1,95 @@
+﻿/*Custom CSS*/
+.login_margin {
+    margin-top: 50px;
+}
+
+.login-bg {
+    background-color: #ecf0f5;
+    min-height:100%;
+    z-index:800;
+}
+
+.input-group .social-url {
+    padding: 18px 12px !important;
+}
+
+.checkbox-size {
+    width: 20px;
+    height: 20px;
+    vertical-align: bottom;
+    margin: 15px 10px 0 0 !important;
+}
+
+p.btn a , text.btn a {
+    color:#fff !important;
+    display:block;
+}
+
+.button {
+    margin: 0 15px 15px 0;
+}
+
+.spaceing{
+    padding:15px;
+}
+
+.img-space {
+    margin: 10px 0 0 0;
+}
+
+.nospacing {
+    padding: 6px 0px;
+}
+
+.chosen-container-multi {
+    width:160px !important;
+}
+
+.chosen-container-single {
+    width:150px !important;
+}
+
+.textColor a {
+    color: white !important;
+}
+
+div.dataTables_wrapper div.dataTables_length label, div.dataTables_wrapper div.dataTables_filter label {
+    padding: 15px 15px 5px 15px !important;
+}
+
+.dataTables_info, .dataTables_paginate {
+    padding: 0 15px;
+}
+
+.pagination > li > a, .pagination > .disabled > a, .pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > span, .pagination > .disabled > span:focus, .pagination > .disabled > span:hover {
+    background-color: #bbb;
+}
+
+.pagination > .active > a {
+    background-color: #337ab7 !important;
+}
+
+.topbar h2{
+    margin:0px !important;
+}
+
+.topbar text , .btn-block{
+    display:block;
+}
+
+.input-group{
+    padding:5px 0;
+}
+
+/*.chosen-container{
+    width:80px !important;
+}*/
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
+    text-align:center;
+    vertical-align:middle !important;
+}
+
+.fileinput-button{
+    display:block !important;
+}

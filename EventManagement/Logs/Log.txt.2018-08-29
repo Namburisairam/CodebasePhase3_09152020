@@ -1,0 +1,8 @@
+﻿2018-08-29 05:14:53,463 ERROR [20] CommonHelpers.Helpers.LogError - Login failed
+System.Exception: User not found
+   at EventManagement.BusinessLogic.Business.AuthLogic.<WebLogin>d__5.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement.BusinessLogic\Business\AuthLogic.cs:line 45
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.LoginController.<Login>d__1.MoveNext() in D:\Techxcape Projects\Galactic\CMS\EventManagementPortal\EventManagement\Controllers\LoginController.cs:line 30

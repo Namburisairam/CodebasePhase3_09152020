@@ -1,0 +1,109 @@
+﻿<div id="waiverForm" class="tab-pane fade form-waiver">
+    <div class="row">
+        <form action="@Url.Action("UploadFormWaiverTemplate")" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <input type="hidden" name="EventID" value="@Model.ID" />
+            <div class="form-group">
+                <label class="control-label col-md-2" for="Description">Upload Waiver Form Template</label>
+                <div class="col-md-10">
+                    <input class="form-control text-box single-line" id="waiverFormPDFTemplate" name="waiverFormTemplate" type="file" required accept=".pdf" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="Description">Activity</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("activityID", new SelectList(ViewBag.Activities, "ID", "Name"))
+                </div>
+            </div>
+            <input type="submit" class="btn btn-success col-md-offset-2" />
+        </form>
+        <div class="underline">
+        </div>
+        <br />
+
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Document Path</th>
+                        <th>Activity</th>
+                        <th>Configure</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.ActivityFormWaivers?.Count > 0)
+                    {
+                        foreach (var item in ViewBag.ActivityFormWaivers)
+                        {
+                            <tr data-activityID="@item.ID">
+                                <td> <a href="@Url.Action("DownloadWaiverFormDocument",new { filePath = item.WaiverFormTemplatePath  }) ">@item.WaiverFormTemplatePath</a></td>
+                                <td> @item.Name</td>
+                                <td>
+                                    <button type="button" class="btn btn-success configureWaiverForm" data-activityID="@item.ID" data-toggle="modal" data-target="#waiverFormModal" > Configure </button>
+                                </td> 
+                                <td>
+                                    <form action="@Url.Action("DeleteFormWaiverTemplate",new { eventID = Model.ID })" method="post">
+                                        <input type="hidden" value="@item.ID" name="activityID" />
+                                        <button type="submit" class="btn btn-danger"> Delete </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3"> No records found </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @*<div class="row">
+            <div class="col-lg-6">
+                <button type="button" id="addNewWaiverMap" class="btn btn-primary">ADD New</button>
+            </div>
+        </div>*@
+    </div>
+</div>
+<div class="modal fade" id="waiverFormModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configure Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="EventID" value="@Model.ID" />
+                    <input type="hidden" name="ActivityID" id="formModalActivityID" />
+                    <div>
+                        <table id="waiverMappings" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Waiver Form Key</th>
+                                    <th>Waiver Mapping Value</th>
+                                    @*<th>Action</th>*@
+                                </tr>
+                            </thead>
+                            <tbody class="form-waiver-config-element">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="btn btn-primary" type="button" id="saveMappings">Send to Attendees</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary">Save</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

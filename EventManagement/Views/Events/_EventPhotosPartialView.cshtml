@@ -1,0 +1,12 @@
+﻿@model  List<EventManagement.DataAccess.DataBase.Model.Photo>
+
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-2 spaceing">
+            <img width="150" height="150" src="@MvcCustom.ImagePath(item.URL)">
+        </div>
+    }
+</div>

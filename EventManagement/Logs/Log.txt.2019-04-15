@@ -1,0 +1,23 @@
+﻿2019-04-15 21:15:11,748 ERROR [64] CommonHelpers.Helpers.LogError - API Error: 
+Twilio.Exceptions.ApiConnectionException: Connection Error: GEThttps://chat.twilio.com/v1/Services/IS20947bdf7e214bd087b6492358cfcee2/Channels/CH11823921fb3d4ba2aeff71898ff359ed/Messages ---> System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote name could not be resolved: 'chat.twilio.com'
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at Twilio.Http.SystemNetHttpClient.MakeRequest(Request request)
+   at Twilio.Clients.TwilioRestClient.Request(Request request)
+   --- End of inner exception stack trace ---
+   at Twilio.Clients.TwilioRestClient.Request(Request request)
+   at Twilio.Rest.Chat.V1.Service.Channel.MessageResource.Read(ReadMessageOptions options, ITwilioRestClient client)
+   at EventManagement.Areas.API.Controllers.EventController.<GetMessages>d__3.MoveNext() in D:\waqar\CMS\EventManagementPortal\EventManagement\Areas\API\Controllers\EventController.cs:line 44
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Mvc.Async.TaskAsyncActionDescriptor.EndExecute(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass37.<BeginInvokeAsynchronousActionMethod>b__36(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)

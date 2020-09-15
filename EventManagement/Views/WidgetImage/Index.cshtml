@@ -1,0 +1,354 @@
+﻿@model IEnumerable<WidgetMapping>
+@{
+    ViewBag.Title = "Index";
+    var eventID = @Request.QueryString["eventId"];
+}
+<style>
+    .widget-image-container {
+        display: block;
+        width: 100%;
+        position: relative;
+    }
+
+        .widget-image-container .widget-image {
+            /*height: 800px;*/
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .widget-image-container .boxes-wrapper {
+            background: transparent;
+            position: absolute;
+            top: 0px;
+        }
+
+        .widget-image-container .widget-box {
+            background: transparent;
+            border: 3px solid #b6ff00;
+            position: absolute;
+        }
+</style>
+@section Script{
+    <script>
+        (function () {
+            "use strict";
+
+            var imageWidget = @Html.Raw(@Json.Encode(Model.Select( x=> new { x.ID, x.WidgetID, x.XLocation, x.YLocation, x.Width, x.Height, x.DisplayName    } )));
+            var imageWidth;
+            var imageHeight;
+            var actualImageWidth;
+            var actualImageHeight;
+            var widgetContainer = $('.widget-image-container');
+            var boxWrapper = $('.boxes-wrapper');
+            var zoomPercent = @ViewBag.zoomPercentage;
+            var isMouseDown = false;
+            var mousePosition;
+            var offset = [];
+            var boxes = [];
+            var prevCordinates;
+            var boxGroupOrigin = { x: 0 , y: 0 };
+            var prevScale = 1;
+            var resolutionFactor;
+            function loadImage() {
+                imageWidth = $('#widgetImage').width();
+                imageHeight = $('#widgetImage').height();
+                actualImageWidth = this.naturalWidth;
+                actualImageHeight = this.naturalHeight;
+                resolutionFactor = actualImageWidth / imageWidth;
+                boxGroupOrigin.x = (@ViewBag.offsetX) / resolutionFactor;
+                boxGroupOrigin.y = (@ViewBag.offsetY) / resolutionFactor;
+                $('#zoomChange').val(zoomPercent);
+                renderboxes();
+            }
+
+            //document.getElementById("widgetImage").addEventListener("load", loadImage);
+
+            $("#widgetImage").on("load", loadImage).each(function () {
+                if (this.complete || /*for IE 10-*/ $(this).height() > 0)
+                    $(this).trigger('load');
+                                    });
+
+            function renderboxes() {
+
+                var boxContainerWidth = imageWidth * (zoomPercent / 100);
+                var boxContainerHeight = imageHeight * (zoomPercent / 100);
+                createBoxes(boxContainerWidth, boxContainerHeight, boxGroupOrigin.x, boxGroupOrigin.y);
+            }
+
+            // createBoxes(imageWidth, imageHeight);
+
+            function createBoxes(boxContainerWidth, boxContainerHeight, xRef , yRef ) {
+                boxes = [];
+                yRef = yRef || 0;
+                xRef = xRef || 0;
+                var groupedWidgets = _.groupBy(imageWidget, function (w) {
+                    return w.YLocation;
+                });
+                var boxUnitHeight = getBoxDimUnitHeight(boxContainerHeight,groupedWidgets);
+                var boxUnitWidth = boxContainerWidth / 2;
+                var y = yRef;
+                for (var widgetRow in groupedWidgets) {
+                    var x = xRef;
+                    var group = groupedWidgets[widgetRow];
+                    for (var i = 0; i <group.length; i++) {
+                        var widWidth = group[i].Width;
+                        var widHeight = group[i].Height;
+                        var padding = 5;
+                        boxes.push({
+                            width: boxUnitWidth * widWidth - padding,
+                            height: boxUnitHeight * widHeight - padding,
+                            x: x + padding,
+                            y: y,
+                            boxID : group[i].ID
+                        });
+                        x += boxUnitWidth * widWidth;
+                    }
+                    y += _.max(_.map(group, function (w) {
+                            return w.Height * boxUnitHeight;
+                        })
+                    );
+                }
+                console.log(boxes);
+                renderBoxes(boxes);
+            }
+
+            function getBoxDimUnitHeight(imageHeight, groupedWidgets) {
+                var rows = _.map(groupedWidgets, function (data) {
+                    return _.sortBy(data, "Height").reverse()[0];
+                });
+                var totalWidgetHeightInUnits = _.reduce(_.map(rows, "Height"), function (total, value) { return total + value });
+                return imageHeight / totalWidgetHeightInUnits;
+            }
+
+            function renderBoxes(boxes) {
+                boxWrapper.empty();
+                for (var i = 0; i < boxes.length; i++) {
+                    boxWrapper.append(createBox(boxes[i]));
+                }
+            }
+
+            function createBox(box) {
+                var boxDom = $('<div class="widget-box">');
+                boxDom.width(box.width);
+                boxDom.height(box.height);
+                boxDom.css({ left: box.x + "px", top: box.y + "px" });
+                return boxDom;
+            }
+
+            function adjustBoxCordinates(xOffset, yOffset) {
+                for (var i = 0; i < boxes.length; i++) {
+                    var box = boxes[i];
+                    box.x += xOffset;
+                    box.y += yOffset;
+                }
+                renderBoxes(boxes);
+                if (boxes[0]) {
+                    boxGroupOrigin.x = boxes[0].x;
+                    boxGroupOrigin.y = boxes[0].y;
+                }
+            }
+
+            function adjustBoxDimensions(scale, mouseOffsetX, mouseOffsetY) {
+                //for (var i = 0; i < boxes.length; i++) {
+                //    var zoom_target = {};
+                //    var box = boxes[i];
+                //    //zoom_target.x = (zoom_point.x - box.x) / prevScale;
+                //    //zoom_target.y = (zoom_point.y - box.y) / prevScale;
+                //    box.width *= scale;  // box.width - box.width * scale;
+                //    box.height *= scale;  // box.height - box.height * scale;
+                //   // box.x -= (mouseOffsetX / prevScale) - (mouseOffsetX / scale); //-zoom_target.x * scale + zoom_point.x;
+                //   // box.y -= (mouseOffsetY / prevScale) - (mouseOffsetY / scale); //-zoom_target.y * scale + zoom_point.y;
+                //}
+                 var width = imageWidth * scale;
+                var height = imageHeight * scale ;
+                var offset = boxWrapper.offset();
+                mouseOffsetX -= offset.left;
+                mouseOffsetY -= offset.top;
+                var xRef = (mouseOffsetX / scale) - (mouseOffsetX / prevScale);
+                var yRef = (mouseOffsetY / scale) - (mouseOffsetY / prevScale);
+                boxGroupOrigin.x -= xRef;
+                boxGroupOrigin.y -= yRef;
+                createBoxes(width - 10 , height - 25 , -boxGroupOrigin.x,-boxGroupOrigin.y);
+                renderBoxes(boxes);
+            }
+
+
+            //boxWrapper.bind('mousewheel', function (e) {
+            //    e.preventDefault();
+            //    e.stopPropagation();
+            //    var zoom_point = {};
+            //    //var zoom_target = {};
+            //    var offset = boxWrapper.offset();
+            //    zoom_point.x = e.pageX - offset.left;
+            //    zoom_point.y = e.pageY - offset.top;
+
+            //    if(e.originalEvent.wheelDelta /120 > 0) {
+            //        zoomParcent += 10;
+            //        if (zoomParcent > 100) {
+            //            zoomParcent = 100;
+            //            return;
+            //        }
+            //    }
+            //    else{
+            //        zoomParcent -= 10;
+            //        if (zoomParcent < 10) {
+            //            zoomParcent = 10;
+            //            return;
+            //        }
+            //    }
+            //    var width = imageWidth * (zoomParcent / 100);
+            //    var height = imageHeight * (zoomParcent / 100);
+            //    var scale = zoomParcent / 100;
+
+            //    //createBoxes(width, height);
+            //    adjustBoxDimensions(scale,e.clientX,e.clientY); // zoom_point prevCordinates.x - offset.left +  ||  prevCordinates.y - offset.top +
+            //    prevScale = scale;
+            //});
+
+            boxWrapper.bind('mousedown', function(e) {
+                    isMouseDown = true;
+                offset = [
+                    boxWrapper.offset().left ,
+                    boxWrapper.offset().top
+                ];
+                prevCordinates = {
+                    x: e.clientX,
+                    y: e.clientY
+                }
+            });
+
+            $(boxWrapper).bind('mouseup', function() {
+                isMouseDown = false;
+            });
+
+            $(boxWrapper).bind('mousemove', function(event) {
+                event.preventDefault();
+                if (isMouseDown) {
+                    mousePosition = {
+                        x : event.clientX,
+                        y : event.clientY
+                    };
+                    //div.style.left = (mousePosition.x + offset[0]) + 'px';
+                    //div.style.top = (mousePosition.y + offset[1]) + 'px';
+
+                    if (!chkBoxCntrReachesBoundry(mousePosition.x - prevCordinates.x, mousePosition.y - prevCordinates.y)) {
+                        adjustBoxCordinates(mousePosition.x - prevCordinates.x, mousePosition.y - prevCordinates.y); // mousePosition.x - offset[0], mousePosition.y - offset[1]
+                        prevCordinates = mousePosition;
+                    }
+                }
+            });
+
+            $('#zoomChange').change(function () {
+                
+                var zoomPrcent = $('#zoomChange').val();
+                zoomPercent = zoomPrcent || 100;
+                zoomPercent = zoomPrcent > 100 ? 100 : zoomPrcent;
+
+                var width = imageWidth * (zoomPercent / 100);
+                var height = imageHeight * (zoomPercent / 100);
+                if (!chkZoomReachesBoundry(width, height)) {
+                    createBoxes(width, height, boxGroupOrigin.x, boxGroupOrigin.y);
+                } else {
+                    alert("Not a valid zoom");
+                }
+                //submit();
+            });
+
+
+
+            //$("#widgetImage").load(function () {
+
+            //    var img = document.getElementById('#widgetImage');
+
+            //    actualImageWidth = img.clientWidth;
+            //    actualImageHeight = img.clientHeight;
+
+            // });
+
+            function submit() {
+                
+                var modifiedBoxes = [];
+                _.forEach(boxes, function (box) {
+                    var clonedBox = {};
+                    clonedBox.x = Math.round( box.x * resolutionFactor);
+                    clonedBox.y = Math.round(box.y * resolutionFactor);
+                    clonedBox.width = Math.round(box.width * resolutionFactor);
+                    clonedBox.height = Math.round(box.height * resolutionFactor);
+                    clonedBox.boxID = box.boxID;
+                    modifiedBoxes.push(clonedBox);
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CropWidgetImages")',
+                    dataType: 'json',
+                    data: { rectangles : modifiedBoxes , eventId : @eventID, zoomPercentage :  zoomPercent, boxOffsetX : (boxGroupOrigin.x * resolutionFactor) , boxOffsetY : (boxGroupOrigin.y * resolutionFactor) }
+                });
+
+            }
+
+            function deepClone(obj) {
+                if(obj == null || typeof(obj) != 'object') {
+                        return obj;
+                }
+                var temp = new obj.constructor();
+
+                for(var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                      temp[key] = deepClone(obj[key]);
+                    }
+                }
+                return temp;
+            }
+
+            $('#submit').click(submit);
+
+            function chkBoxCntrReachesBoundry(xDeviation, yDeviation) {
+
+                var firstBox = _.first(boxes);
+                var lastBox = _.last(boxes);
+
+                //var containerWidth = lastBox.x + lastBox.width - firstBox.x;
+                //var containerHeight = lastBox.y - lastBox.y;
+
+                if (lastBox.x + lastBox.width + xDeviation > imageWidth || lastBox.y + lastBox.height + yDeviation > imageHeight) {
+                    return true;
+                }
+
+                else if (firstBox.x + xDeviation < 0 || firstBox.y + yDeviation < 0) {
+                    return true;
+                }
+                return false;
+            }
+
+            function chkZoomReachesBoundry(width,height) {
+
+                return boxGroupOrigin.x + width > imageWidth || boxGroupOrigin.y + height > imageHeight;
+            }
+
+        })();
+
+    </script>
+}
+<div class="content-wrapper">
+    <section class="content">
+
+        @using (Html.BeginForm("UploadWidgetImage", "WidgetImage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="file" name="file" class="form-control" />
+            <input type="hidden" value="@eventID" name="eventID" /> <br />
+            <button type="submit" class="btn btn-primary" > Upload</button>
+        }
+        <br />
+       <div> Zoom Level: </div> <input class="form-control" type="number" id="zoomChange" style="width: 200px" />
+        <br />
+        <div class="widget-image-container">
+            <img class="widget-image" id="widgetImage" src="@MvcCustom.ImagePath(ViewBag.widgetImage)" />
+            <div class="boxes-wrapper"> </div>
+        </div>
+        <br />
+        <button class="btn btn-primary" id="submit">Save</button>
+    </section>
+</div>
+

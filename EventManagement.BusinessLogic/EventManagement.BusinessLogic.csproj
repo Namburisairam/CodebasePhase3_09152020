@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3F5F71AF-AE8F-4577-A1C8-8229B23CA4B8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EventManagement.BusinessLogic</RootNamespace>
+    <AssemblyName>EventManagement.BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.1.3\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="Google.Apis, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.37.0\lib\net45\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.37.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.37.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.37.0\lib\net45\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.37.0.1466, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.37.0.1466\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Oauth2.v2, Version=1.36.1.1404, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Oauth2.v2.1.36.1.1404\lib\net45\Google.Apis.Oauth2.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.37.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.barcodes, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.barcodes.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.forms, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.forms.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.io, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.io.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.kernel, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.layout, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.layout.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.pdfa, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.sign, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.sign.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.styledxmlparser, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.styledxmlparser.dll</HintPath>
+    </Reference>
+    <Reference Include="itext.svg, Version=7.1.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itext7.7.1.9\lib\net40\itext.svg.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Storage.Blob, Version=11.1.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.Storage.Blob.11.1.6\lib\net452\Microsoft.Azure.Storage.Blob.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Storage.Common, Version=11.1.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.Storage.Common.11.1.6\lib\net452\Microsoft.Azure.Storage.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.2\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.2\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.2\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Twilio, Version=5.28.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.5.28.0\lib\net451\Twilio.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.2\lib\net40\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIException.cs" />
+    <Compile Include="Business\ActivityLogic.cs" />
+    <Compile Include="Business\AppDownloadsReport.cs" />
+    <Compile Include="Business\AttendesLogic.cs" />
+    <Compile Include="Business\Authenticate.cs" />
+    <Compile Include="Business\AuthLogic.cs" />
+    <Compile Include="Business\ChatAdminChannel.cs" />
+    <Compile Include="Business\ChatLogic.cs" />
+    <Compile Include="Business\CommonLogic.cs" />
+    <Compile Include="Business\Configs.cs" />
+    <Compile Include="Business\Email Notifier\EmailNotifier.cs" />
+    <Compile Include="Business\Email Notifier\EmailSender.cs" />
+    <Compile Include="Business\Error.cs" />
+    <Compile Include="Business\EventLogic.cs" />
+    <Compile Include="Business\EventPhotosDto.cs" />
+    <Compile Include="Business\EventVideoManager.cs" />
+    <Compile Include="Business\Exhibitors.cs" />
+    <Compile Include="Business\Firechatlogic.cs" />
+    <Compile Include="Business\FloorDirectionsLogic.cs" />
+    <Compile Include="Business\GoogleDriveSync.cs" />
+    <Compile Include="Business\Notifications.cs" />
+    <Compile Include="Business\PDFFormEditor.cs" />
+    <Compile Include="Business\QRCodeLogic.cs" />
+    <Compile Include="Business\ReportsLogic.cs" />
+    <Compile Include="Business\SocialForumBusiness.cs" />
+    <Compile Include="Business\SponsorsLogic.cs" />
+    <Compile Include="Business\BaseLogic.cs" />
+    <Compile Include="Business\SurveyLogic.cs" />
+    <Compile Include="Business\UserGroupInformation.cs" />
+    <Compile Include="Business\UserGroups.cs" />
+    <Compile Include="Business\VendorsLogic.cs" />
+    <Compile Include="Business\WidgetImageService.cs" />
+    <Compile Include="Classes\AdminConversation.cs" />
+    <Compile Include="Classes\AdminNotFoundException.cs" />
+    <Compile Include="Classes\AdminValidator.cs" />
+    <Compile Include="Classes\AtteendeeValidator.cs" />
+    <Compile Include="Classes\ActivityWaiverDoc.cs" />
+    <Compile Include="Classes\GalacticEventExistsException.cs" />
+    <Compile Include="Classes\SpeakerValidator.cs" />
+    <Compile Include="Interfaces\ICheckAttendeeValidity.cs" />
+    <Compile Include="Interfaces\INotifier.cs" />
+    <Compile Include="Models\ActivityDTO.cs" />
+    <Compile Include="Models\APIDTOOjbects\GooglePhotoDTO.cs" />
+    <Compile Include="Models\APIDTOOjbects\GPSAPILogin.cs" />
+    <Compile Include="Models\AppUsage.cs" />
+    <Compile Include="Models\AttendeeChannelImages.cs" />
+    <Compile Include="Models\AttendeesByEventId\AttendeesModel.cs" />
+    <Compile Include="Models\AttendesDTO.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Box.cs" />
+    <Compile Include="Models\ChannelAttendeeImages.cs" />
+    <Compile Include="Models\channelmsgs.cs" />
+    <Compile Include="Models\ChatAttendee.cs" />
+    <Compile Include="Models\CMSChannelMessages.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\DocumentModel.cs" />
+    <Compile Include="Models\DownloadPhotos.cs" />
+    <Compile Include="Models\Enums\ScreenTypes.cs" />
+    <Compile Include="Models\EventAttendees.cs" />
+    <Compile Include="Models\EventData.cs" />
+    <Compile Include="Models\EventExcelDto.cs" />
+    <Compile Include="Models\ChatMessaging.cs" />
+    <Compile Include="Models\EventQuestions.cs" />
+    <Compile Include="Models\EventSurveyData.cs" />
+    <Compile Include="Models\FloorMap.cs" />
+    <Compile Include="Models\FloorMapBox.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\NotificationData.cs" />
+    <Compile Include="Models\OptionData.cs" />
+    <Compile Include="Models\Preferences.cs" />
+    <Compile Include="Models\QuestionsWithOptions.cs" />
+    <Compile Include="Models\EventTheme.cs" />
+    <Compile Include="Models\LoginEventData.cs" />
+    <Compile Include="Models\RecentConversations.cs" />
+    <Compile Include="Models\RecentMessage.cs" />
+    <Compile Include="Models\ReplicateEvent.cs" />
+    <Compile Include="Models\SocialCommentDTO.cs" />
+    <Compile Include="Models\SponsorsDTO.cs" />
+    <Compile Include="Models\SponsorsModel.cs" />
+    <Compile Include="Models\SurveyEventActivities.cs" />
+    <Compile Include="Models\SurveyList.cs" />
+    <Compile Include="Models\SurveyModel.cs" />
+    <Compile Include="Models\SurveyQuestions.cs" />
+    <Compile Include="Models\SurveyReport.cs" />
+    <Compile Include="Models\SurveySponsor.cs" />
+    <Compile Include="Models\SurveyVendor.cs" />
+    <Compile Include="Models\TemplateModel.cs" />
+    <Compile Include="Models\TemplateQuestions.cs" />
+    <Compile Include="Models\TopSavedActivities.cs" />
+    <Compile Include="Models\TopVisitedPages.cs" />
+    <Compile Include="Models\TreeNode.cs" />
+    <Compile Include="Models\UserChannelMessages.cs" />
+    <Compile Include="Models\WidgetBox.cs" />
+    <Compile Include="Models\TQuestionswithOptions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Static Configs\Galactic Configs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonHelpers\CommonHelpers.csproj">
+      <Project>{A69E282B-C8A2-455C-B26F-F86865E1BA51}</Project>
+      <Name>CommonHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EventManagement.DataAccess\EventManagement.DataAccess.csproj">
+      <Project>{5961f12f-0254-4cca-b2fe-75d3d7c3e2fe}</Project>
+      <Name>EventManagement.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

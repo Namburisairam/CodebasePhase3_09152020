@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2e66d32a8c934dc29c675efad34be62a" Name="Diagram1" ZoomLevel="62">
+        <EntityTypeShape EntityType="Event_Management2Model.Activite" Width="1.5" PointX="10.5" PointY="60.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ActivityTPYE" Width="1.5" PointX="8.25" PointY="48.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.AdminInfo" Width="1.5" PointX="7.5" PointY="27.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.AppDownload" Width="1.5" PointX="1.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.AttendeeGroup" Width="1.5" PointX="7.5" PointY="85.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Attende" Width="1.5" PointX="5.25" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.AttendesEvent" Width="1.5" PointX="5.25" PointY="49" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.BookMark" Width="1.5" PointX="15.75" PointY="67" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ChannelUser" Width="1.5" PointX="7.5" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ChatChannel" Width="1.5" PointX="5.25" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Config" Width="1.5" PointX="3.875" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Configuration" Width="1.5" PointX="1.875" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.DocumentFavourite" Width="1.5" PointX="18" PointY="62.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Document" Width="1.5" PointX="15.75" PointY="62.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Event" Width="2.625" PointX="1.875" PointY="43.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.EventInfo" Width="1.5" PointX="5.25" PointY="64.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.EventLocationDetail" Width="1.5" PointX="5.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Exhibitor" Width="1.5" PointX="9.75" PointY="75.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ExhibitorsEvent" Width="1.5" PointX="10.5" PointY="56.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.FloorMapLocation" Width="1.5" PointX="5.25" PointY="77.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.FloorMapping" Width="1.5" PointX="5.25" PointY="81.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.FloorRegionMapping" Width="1.5" PointX="7.5" PointY="63.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ForumSocialComment" Width="1.5" PointX="13.5" PointY="52.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.GroupInfo" Width="1.5" PointX="5.25" PointY="84.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.ManagerEvent" Width="1.5" PointX="5.25" PointY="55.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Messaging" Width="1.5" PointX="7.5" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Note" Width="1.5" PointX="15.75" PointY="57.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Notification" Width="1.5" PointX="5.25" PointY="43.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.PhotoAlbum" Width="1.5" PointX="5.25" PointY="88.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.PhotoLike" Width="1.5" PointX="12.75" PointY="73" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Photo" Width="1.5" PointX="7.5" PointY="69.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.PostType" Width="1.5" PointX="6" PointY="40.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.PostUserLike" Width="1.5" PointX="10.5" PointY="53" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.QRCode" Width="1.5" PointX="12.75" PointY="56.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.QRHistory" Width="1.5" PointX="18" PointY="57.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.SocialForum" Width="1.5" PointX="8.25" PointY="51.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.SpeakerActivity" Width="1.5" PointX="16.5" PointY="59.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Speakers_" Width="1.5" PointX="5.75" PointY="43.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.SpeakersEvent" Width="1.5" PointX="8" PointY="64.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Sponsor" Width="1.5" PointX="9.75" PointY="70.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.SponsorsEvent" Width="1.5" PointX="18" PointY="65.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Sys_Log" Width="1.5" PointX="7.5" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.TextChat" Width="1.5" PointX="7.5" PointY="58.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Theme" Width="1.5" PointX="5.25" PointY="96.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.UserPackageType" Width="1.5" PointX="8.25" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.UserSession" Width="1.5" PointX="7.5" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Vendor" Width="1.5" PointX="13.5" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.VendorsEvent" Width="1.5" PointX="13.5" PointY="64.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.WidgetMapping" Width="1.5" PointX="5.25" PointY="58.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.Widget" Width="1.5" PointX="3" PointY="66.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Event_Management2Model.WidgetType" Width="1.5" PointX="0.75" PointY="66.25" IsExpanded="true" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Activ__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Event__54CB950F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Floor__038683F8" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Floor__047AA831" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Floor__056ECC6A" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__BookMark__Activi__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__Activity_i__12C8C788" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__Ativitit__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__Ativitit__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SpeakerAc__Activ__11D4A34F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__AdminInfo__ID__0C1BC9F9" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__AttendeeG__Atten__14B10FFA" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__AttendeeG__Group__16CE6296" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__AttendesE__Atten__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__BookMark__Attend__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ChannelUs__Atten__1975C517" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__DocumentF__Atten__1C5231C2" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ForumSoci__Atten__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ForumSoci__Atten__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ManagerEv__Manag__567ED357" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Messaging__Recei__756D6ECB" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Messaging__Sende__76619304" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__UserID__6DCC4D03" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Notificat__Atten__503BEA1C" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PhotoLike__Atten__477199F1" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PostUserL__Atten__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PostUserL__Atten__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRHistory__Atten__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRHistory__Atten__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__Atten__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__Atten__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Sys_Log__Modifie__725BF7F6" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__TextChat__Receiv__3552E9B6" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__TextChat__Sender__36470DEF" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__UserSessi__Atten__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__UserSessi__Atten__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__AttendesE__Event__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ChannelUs__Chann__1A69E950" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ChatChann__Event__1B5E0D89" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__TextChat__Channe__336AA144" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__DocumentF__Docum__1D4655FB" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__Event__078C1F06" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__exhib__0880433F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__Speak__5006DFF2" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__spons__0A688BB1" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__EventInfo__ID__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__EventLoca__Event__44952D46" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorMapL__event__0EF836A4" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorMapp__Event__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorRegi__Event__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorRegi__Event__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__GroupInfo__Event__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ManagerEv__Event__558AAF1E" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Notificat__Event__4F47C5E3" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PhotoAlbu__event__662B2B3B" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Photos__EventID__02925FBF" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__EventID__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__EventID__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__Event__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__Event__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorsE__Event__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Theme__EventID__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__WidgetMap__Event__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_EventExhibitors" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_EventIDD" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_EventVendor" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Exhibitor__Floor__7A3223E8" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__Exhibitor___7908F585" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_Exhibitors" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Exhibitor__Floor__11D4A34F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorRegi__floor__0FEC5ADD" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorsE__Floor__10E07F16" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__VendorsEv__Floor__12C8C788" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorRegio__FMid__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__FloorRegio__FMid__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Sponsors__FloorR__123EB7A3" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ForumSoci__PostI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__ForumSoci__PostI__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__TextChat__GroupI__345EC57D" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__Sponsor_id__7814D14C" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__Vendor_id__7720AD13" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_Photos_Album_1" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PhotoLike__Photo__467D75B8" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__PostT__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialFor__PostT__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PostUserL__PostI__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__PostUserL__PostI__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__SponsorI__3C34F16F" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRHistory__QRid__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRHistory__QRid__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SpeakerAc__Speak__2B0A656D" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Speakers___Packa__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_SpeakerID" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorsE__Spons__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorsE__Spons__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK_Vendors" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__WidgetMap__Widge__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.fk_WidgetMappings_WidgetType" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Widgets__default__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="Event_Management2Model.FK__Activites__Floor__58671BC9" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__Activ__5772F790" />
+        <AssociationConnector Association="Event_Management2Model.FK__Documents__Atten__595B4002" />
+        <EntityTypeShape EntityType="Event_Management2Model.Error_Logs" Width="1.5" PointX="3.875" PointY="3.75" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__EventID__24B26D99" ></AssociationConnector>
+        <EntityTypeShape EntityType="Event_Management2Model.UserNotification" Width="1.5" PointX="7.5" PointY="43.5" />
+        <AssociationConnector Association="Event_Management2Model.FK__UserNotif__Atten__2E3BD7D3" />
+        <AssociationConnector Association="Event_Management2Model.FK__UserNotif__Notif__2D47B39A" />
+        <AssociationConnector Association="Event_Management2Model.FK__Exhibitor__packa__3D7E1B63" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorsE__packa__3C89F72A" />
+        <AssociationConnector Association="Event_Management2Model.FK__VendorsEv__packa__3E723F9C" />
+        <EntityTypeShape EntityType="Event_Management2Model.Option" Width="1.5" PointX="15" PointY="70" />
+        <EntityTypeShape EntityType="Event_Management2Model.Question" Width="1.5" PointX="18" PointY="70.5" />
+        <EntityTypeShape EntityType="Event_Management2Model.Response" Width="1.5" PointX="23.25" PointY="49" />
+        <EntityTypeShape EntityType="Event_Management2Model.ResponseType" Width="1.5" PointX="15.75" PointY="73.125" />
+        <EntityTypeShape EntityType="Event_Management2Model.Survey" Width="1.5" PointX="12.75" PointY="68.625" />
+        <EntityTypeShape EntityType="Event_Management2Model.SurveySubmittedFor" Width="1.5" PointX="20.25" PointY="46" />
+        <EntityTypeShape EntityType="Event_Management2Model.TemplateQuestionOption" Width="1.5" PointX="20.25" PointY="77.875" />
+        <EntityTypeShape EntityType="Event_Management2Model.TemplateQuestion" Width="1.5" PointX="18" PointY="75" />
+        <EntityTypeShape EntityType="Event_Management2Model.TemplateSurvey" Width="1.5" PointX="18" PointY="78.125" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__Activit__4DE98D56" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__Activ__60FC61CA" />
+        <AssociationConnector Association="Event_Management2Model.FK__Response__UserID__5B438874" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__UserI__5E1FF51F" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__Event__60083D91" />
+        <AssociationConnector Association="Event_Management2Model.FK__Options__QID__567ED357" />
+        <AssociationConnector Association="Event_Management2Model.FK__Question__Questi__52AE4273" />
+        <AssociationConnector Association="Event_Management2Model.FK__Question__Survey__51BA1E3A" />
+        <AssociationConnector Association="Event_Management2Model.FK__Response__Questi__5A4F643B" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__Quest__5F141958" />
+        <AssociationConnector Association="Event_Management2Model.FK__TemplateQ__TQues__4460231C" />
+        <AssociationConnector Association="Event_Management2Model.FK__TemplateQ__TQues__4B0D20AB" />
+        <AssociationConnector Association="Event_Management2Model.FK__ForumSoci__Paren__61F08603" />
+        <EntityTypeShape EntityType="Event_Management2Model.SocialCommentLike" Width="1.5" PointX="15.75" PointY="37.875" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialCom__UserI__65C116E7" />
+        <AssociationConnector Association="Event_Management2Model.FK__SocialCom__Comme__64CCF2AE" />
+        <AssociationConnector Association="Event_Management2Model.FK__TemplateQ__TQSur__66B53B20" />
+        <EntityTypeShape EntityType="Event_Management2Model.WaiverFormMappingValue" Width="1.5" PointX="9" PointY="79.75" />
+        <EntityTypeShape EntityType="Event_Management2Model.WaiverFormTemplateMapping" Width="1.5" PointX="11.25" PointY="49.5" />
+        <AssociationConnector Association="Event_Management2Model.FK__WaiverFor__Event__6C6E1476" />
+        <AssociationConnector Association="Event_Management2Model.FK__WaiverFor__Value__6D6238AF" />
+        <EntityTypeShape EntityType="Event_Management2Model.ExhibitorActivity" Width="1.5" PointX="12.75" PointY="75.875" />
+        <EntityTypeShape EntityType="Event_Management2Model.SponsorActivity" Width="1.5" PointX="20.75" PointY="66.625" />
+        <EntityTypeShape EntityType="Event_Management2Model.VendorActivity" Width="1.5" PointX="15.75" PointY="54.5" />
+        <AssociationConnector Association="Event_Management2Model.FK__Exhibitor__Activ__78D3EB5B" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorAc__Activ__7132C993" />
+        <AssociationConnector Association="Event_Management2Model.FK__VendorAct__Activ__75035A77" />
+        <AssociationConnector Association="Event_Management2Model.FK__Exhibitor__Exhib__77DFC722" />
+        <AssociationConnector Association="Event_Management2Model.FK__SponsorAc__Spons__703EA55A" />
+        <AssociationConnector Association="Event_Management2Model.FK__VendorAct__Vendo__740F363E" />
+        <AssociationConnector Association="Event_Management2Model.FK__WaiverFor__Activ__7D98A078" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__Attendee__04459E07" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__SurveyT__7F80E8EA" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__Exhibito__062DE679" />
+        <AssociationConnector Association="Event_Management2Model.FK__QRCode__VendorID__07220AB2" />
+        <EntityTypeShape EntityType="Event_Management2Model.EventVideo" Width="1.5" PointX="5.25" PointY="72.75" />
+        <AssociationConnector Association="Event_Management2Model.FK__EventVide__Event__0EC32C7A" />
+        <EntityTypeShape EntityType="Event_Management2Model.EventInformation" Width="1.5" PointX="5.25" PointY="17.375" />
+        <AssociationConnector Association="Event_Management2Model.FK__EventInfo__Event__119F9925" />
+        <AssociationConnector Association="Event_Management2Model.FK__Note__MarkerID__24B26D99" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__Sponsor__79FD19BE" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__VendorI__7908F585" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__Sponsor__5A1A5A11" />
+        <AssociationConnector Association="Event_Management2Model.FK__Surveys__VendorI__5B0E7E4A" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__Spons__5CF6C6BC" />
+        <AssociationConnector Association="Event_Management2Model.FK__SurveySub__Vendo__5C02A283" />
+        <EntityTypeShape EntityType="Event_Management2Model.ApplicationLog" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Event_Management2Model.channelgroup" Width="1.5" PointX="9" PointY="3.5" />
+        <EntityTypeShape EntityType="Event_Management2Model.channelmessage" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Event_Management2Model.channel" Width="1.5" PointX="6.75" PointY="4.875" />
+        <EntityTypeShape EntityType="Event_Management2Model.devicefcmtoken" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Event_Management2Model.PhotoLike1" Width="1.5" PointX="10.125" PointY="45.125" />
+        <EntityTypeShape EntityType="Event_Management2Model.userchannel" Width="1.5" PointX="5.625" PointY="91.375" />
+        <EntityTypeShape EntityType="Event_Management2Model.UserChannelUnreadCount" Width="1.5" PointX="9" PointY="6.25" />
+        <EntityTypeShape EntityType="Event_Management2Model.UserChatChannel" Width="1.5" PointX="11" PointY="31.875" />
+        <AssociationConnector Association="Event_Management2Model.FK__PhotoLike__Atten__5FD33367" />
+        <AssociationConnector Association="Event_Management2Model.channelgroups_channelid" />
+        <AssociationConnector Association="Event_Management2Model.FK_UserChannelUnreadCount_channelid" />
+        <AssociationConnector Association="Event_Management2Model.FK_UserChatChannels_channelid" />
+        <AssociationConnector Association="Event_Management2Model.FK_userchannels_Eventid" />
+        <AssociationConnector Association="Event_Management2Model.FK_UserChatChannels_Eventid" />
+        <AssociationConnector Association="Event_Management2Model.FK_PhotoLike_PhotoId" />
+        <AssociationConnector Association="Event_Management2Model.FK_ChannelMessages_channelid" />
+        <EntityTypeShape EntityType="Event_Management2Model.SysSetting" Width="1.5" PointX="5.375" PointY="7.75" />
+        <AssociationConnector Association="Event_Management2Model.FK_AppDownloads_AttendeeId" />
+        <AssociationConnector Association="Event_Management2Model.FK__channels__GroupI__71F1E3A2" />
+        <EntityTypeShape EntityType="Event_Management2Model.ApplicationAccessInfo" Width="1.5" PointX="9.375" PointY="0.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Script{
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDp2RyLenWQFsPTdxYIMK34Xr6nrOCpBDU",
+            authDomain: "chattest-69cd9.firebaseapp.com",
+            databaseURL: "https://chattest-69cd9.firebaseio.com",
+            projectId: "chattest-69cd9",
+            storageBucket: "chattest-69cd9.appspot.com",
+            messagingSenderId: "119561174202",
+            appId: "1:119561174202:web:4dc736d5fb0211856e9683"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var myName = prompt("Enter you name");
+
+        function sendMessage() {
+            var message = document
+                .getElementById("message").value;
+
+            var channel_Id;
+            // = myName.concat(document.getElementById("selectID").value);
+
+            var Touser = $("#SelectAttendee").val();
+
+            console.log("Touser");
+             $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChannelId", "FireChat")',
+                    dataType: 'json',
+                    data: {FromuserId :1 , TouserId:Touser},
+                    success: function (data)
+                    {
+                        channel_Id = data;
+                    }
+                });
+
+            firebase.database().ref("messages").push().set({
+                "sender": myName,
+                "message": message,
+                "channelId": channel_Id //database id here
+            });
+
+            return false;
+        }
+
+        firebase.database().ref("messages").on("child_added", function (snapshot) {
+            var html = "";
+            //if (snapshot.val().channelId == myName.concat(document.getElementById("selectID").value)) {
+
+            if (snapshot.val().channelId == channel_Id ) {
+                // give each message a unique ID
+                html += "<li id='message-" + snapshot.key + "'>";
+
+                html += snapshot.val().sender + ": " + snapshot.val().message + ": " + snapshot.val().channelId;
+
+                // show delete button if message is sent by me
+                if (snapshot.val().sender == myName) {
+                    html += "<button data-id='" + snapshot.key + "' onclick='deleteMessage(this);'>";
+                    html += "Delete";
+                    html += "</button>";
+                }
+                html += "</li>";
+
+                document.getElementById("messages").innerHTML += html;
+            }
+
+
+        });
+
+        function deleteMessage(self) {
+            // get message ID
+            var messageId = self.getAttribute("data-id");
+
+            // delete message
+            firebase.database().ref("messages").child(messageId).remove();
+        }
+
+        // attach listener for delete message
+        firebase.database().ref("messages").on("child_removed", function (snapshot) {
+            // remove message node
+            document.getElementById("message-" + snapshot.key).innerHTML = "This message has been removed";
+        });
+    </script>
+
+    <form onsubmit="return sendMessage();">
+
+        @*<select id="selectID">
+                <option value="Sai Ram">Sai Ram</option>
+                <option value="Sai Krishna">Sai Krishna</option>
+                <option value="Priya">Priya</option>
+                <option value="Praveen">Praveen</option>
+            </select>*@
+
+        <select class="form-control SelectAttendee" name="SelectAttendee" id="SelectAttendee">
+            @foreach (var item in ViewBag.Attendees as IEnumerable<EventManagement.BusinessLogic.Models.ChatAttendee>)
+            {
+                <option value="@item.ID"> @item.Name</option>
+            }
+        </select>
+
+        <input id="message" placeholder="Enter Message" autocomplete="off" />
+
+        <input type="submit" />
+    </form>
+    <ul id="messages"></ul>
+}

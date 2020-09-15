@@ -1,0 +1,277 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Exhibitor
+
+@{
+    /**/
+
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //ViewBag.Events
+}
+@section Script{
+    <script>
+    if('@ViewBag.Error' !=''){
+        alert('@ViewBag.Error')
+        }
+        $('form').validate();
+    </script>
+    <script src="@Url.Content("~/Content/scripts/jHtmlArea-0.8.js")"></script>
+    <script src="~/Scripts/CMSCommon.js"></script>
+    <link rel="Stylesheet" href="@Url.Content("~/Content/style/jHtmlArea.css")" />
+    <script type="text/javascript">
+
+        // You can do this to perform a global override of any of the "default" options
+        // jHtmlArea.fn.defaultOptions.css = "jHtmlArea.Editor.css";
+
+        $(function () {
+            $("#txtDefaultHtmlArea").htmlarea(); // Initialize all TextArea's as jHtmlArea's with default values
+            $("#txtDefaultHtmlhead").htmlarea();
+            $("#txtDefaultHtmlheadname").htmlarea();
+        });
+
+         $(document).ready(function () {
+
+            $('#exhibitorImage').on('change', function () {
+                imageFormatCheck($(this).val(), "#btnExhibitorSubmit");
+            });
+        });
+
+    </script>
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+
+                            <h3 class="box-title">@(Model.ID > 0 ? "Edit Exhibitor" : "New Exhibitor")</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+                    <form method="post" class="box-header box box-primary with-border" enctype="multipart/form-data" action="@Url.Action("Create")">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+
+                            <!--testing-->
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <textarea id="txtDefaultHtmlhead" name="Name" class="form-control" cols="50" rows="15">@Model.Name</textarea>
+                                    @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <textarea id="txtDefaultHtmlArea" name="Description" class="form-control" cols="50" rows="15">@Model.Description</textarea>
+
+                                    @Html.ValidationMessageFor(model => model.Description, string.Empty, new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.ID)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="file"  id="exhibitorImage"  name="thumbnail" @(Model.ID == 0 ? "required" : string.Empty)>
+                                    <img class="img-space" height="100" width="100" src="@MvcCustom.ImagePath(Model.Thumbnail)" />
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                    <label class="control-label col-md-2">Sponsor Type</label>
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            <select name="Packagetype" class="control-label col-md-2">
+                                                @foreach (var item in ViewBag.Userpackage)
+                                                {
+                                                    <option value="@item.ID" @(Model.Packagetype == item.ID ? "selected" : "")>@item.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DocURL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DocURL)
+                                    @Html.ValidationMessageFor(model => model.DocURL, string.Empty, new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Exhibitor Events</label>
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        <select name="events" class="control-label col-md-2" multiple>
+                                            @foreach (var item in ViewBag.Events)
+                                            {
+                                                <option @(Model.ExhibitorsEvents.Any(x => x.EventID == item.ID) ? "selected" : string.Empty) value="@item.ID">@item.EventName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="control-label col-md-2" title="Enabling this will allow exhibitor to favorite documents">Favourite Document</label>
+                                <div class="col-md-2">
+                                    <div class="checkbox" title="Enabling this will allow exhibitor to favorite documents">
+                                        @Html.EditorFor(model => model.MarkDocumentasFavourite, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MarkDocumentasFavourite, string.Empty, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div> <br />
+                            <div>
+
+                                <label class="control-label col-md-2" title="Enabling this will allow exhibitor to save/Share documents">Save/Share Document</label>
+                                <div class="col-md-2">
+                                    <div class="checkbox" title="Enabling this will allow exhibitor to save/Share documents">
+                                        @Html.EditorFor(model => model.SaveShareDocuments, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.SaveShareDocuments, string.Empty, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group col-md-12">
+                                <div class="col-md-2 nospacing">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-info col-md-12 nospacing">Twitter <big>#</big></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 nospacing">
+                                    <input type="url" name="TwitterURL" value="@Model.TwitterURL" class="form-control social-url">
+                                </div>
+                            </div>
+
+                            <div class="input-group col-md-12">
+                                <div class="col-md-2 nospacing">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary col-md-12 nospacing">Website <big>#</big></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 nospacing">
+                                    <input type="url" name="WebsiteURL" value="@Model.WebsiteURL" class="form-control social-url">
+                                </div>
+                            </div>
+
+
+                            @*<div class="form-group">
+                                    <p class="control-label col-md-2">Active</p>
+
+                                    <div class="col-md-10">
+                                        <div class="checkbox">
+                                            @Html.EditorFor(model => model.Status)
+                                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" id="btnExhibitorSubmit" value="@(Model.ID > 0 ?"Update" : "Create" )" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </section>
+</div>
+
+
+
+@*<div class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data" action="@Url.Action("Create")">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4>Sponsor</h4>
+                        <hr />
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.ID)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="file" name="thumbnail" @(Model.ID == 0 ? "required" : "")>
+                                <img class="img-space" height="100" width="100" src="@MvcCustom.ImagePath(Model.Thumbnail)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DocURL, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DocURL)
+                                @Html.ValidationMessageFor(model => model.DocURL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.Status)
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Sponsor Events</label>
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <select name="events" class="control-label col-md-2" multiple>
+                                        @foreach (var item in ViewBag.Events)
+                                                            {
+                                                            <option @(Model.SponsorsEvents.Any(x => x.EventID == item.ID) ? "selected" : "") value="@item.ID">@item.EventName</option>
+                                                            }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="@(Model.ID > 0 ?"Update" : "Create" )" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+        </section>
+    </div>*@

@@ -1,0 +1,397 @@
+﻿
+@model List<EventManagement.DataAccess.DataBase.Model.EventInformation>
+
+@{
+    Layout = null;
+}
+
+
+@*<script src="@Url.Content("~/Content/scripts/jHtmlArea-0.8.js")"></script>
+    <link rel="Stylesheet" href="@Url.Content("~/Content/style/jHtmlArea.css")" />*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function ()
+    {
+        var eventInformationCount = @Model.Count();
+        var eventId = @ViewBag.eventID;
+
+        var eventInformationData = @{@Html.Raw(Json.Encode(Model.Select(x => new { x.ID, x.HideSection,x.AboutSection,x.IconSection,x.SectionType,x.DescriptionSection,x.IsExternalLink,x.ExternalLinkURL,x.SectionOrder })))};
+
+
+        for (var i = 0; i < eventInformationData.length; i++)
+        {
+            addNewEventInfo(eventInformationData[i],i);
+        }
+
+        //if (eventInformationCount == 0) {
+        //    $("#SaveEventInfo").prop('disabled',true);
+        //}
+
+       $(".AddSection").click(function ()
+       {
+           addNewEventInfo(null,eventInformationCount);
+           eventInformationCount = eventInformationCount + 1;
+            $(".EventDescription").htmlarea();
+       });
+
+        function addNewEventInfo(eventInformation,index)
+        {
+
+                eventInformation = eventInformation || {};
+                var container = $('<div>');
+
+                var v_SectionID = 'eventInformation[' + index + '].ID';
+                var eventSection = $('<input type="hidden" class="ID" name=' + v_SectionID + '  value=""/>').val(eventInformation.ID);
+
+                var v_isEnabled = 'eventInformation[' + index + '].HideSection';
+                var isEnabled = $('<input type="checkbox" class="isEnabled" name="' + v_isEnabled + '" value="true" />').attr("checked",eventInformation.HideSection);
+
+                var v_aboutEvent = 'eventInformation[' + index + '].AboutSection';
+                var aboutEvent = $('<input type="text" class="aboutEvent" name=' + v_aboutEvent + ' value=""/>').val(eventInformation.AboutSection);
+
+                var v_icon = 'images[' + index + ']';
+                var icon = $('<input type="file" class="iconFile" name=' + v_icon + ' value="" />');
+
+                var v_sectionType = 'eventInformation[' + index + '].SectionType'
+                var sectionType = $('<select class="sectionType" name=' + v_sectionType + '> <option value="">--Select--</option> <option>Contact Section</option> <option>About Section</option> <option>Generic Section</option> </select>').val(eventInformation.SectionType);
+
+                var v_aboutEventDescription = 'eventInformation[' + index + '].DescriptionSection';
+                var aboutEventDescription = $('<textarea class="form-control EventDescription" cols="50" rows="15" name="'+v_aboutEventDescription+'"></textarea>').val(eventInformation.DescriptionSection);
+
+                var v_isExternalLink = 'eventInformation[' + index + '].IsExternalLink';
+                var isExternalLink = $('<input type="checkbox" class="isExternalLink" name="'+v_isExternalLink+ '" value="true" />').attr("checked",eventInformation.IsExternalLink);
+
+                var v_externalLink = 'eventInformation[' + index + '].ExternalLinkURL';
+                var externalLink = $('<input type="text" class="externalLink" name='+v_externalLink+' value="" />').val(eventInformation.ExternalLinkURL);
+
+                var v_sectionOrder = 'eventInformation[' + index + '].SectionOrder';
+                var sectionOrder = $('<input type="text" class="sectionOrder" name=' + v_sectionOrder + ' value=""/>').val(eventInformation.SectionOrder);
+
+                var spacing = $('<br/>');
+                var underline = $('<div class="underline"></div>');
+
+                var Image = '@MvcCustom.RootImagePath()'+'/'+  eventInformation.IconSection;
+
+                $("#AddNewSection").append(container);
+                container
+                .append(eventSection)
+                .append('<br/><label class="control-label col-md-2"> Is Enabled :</label>').append(isEnabled)
+                .append('<br/><br/><label class="control-label col-md-2"> About Event :</label>').append(aboutEvent)
+                .append('<br/><label class="control-label col-md-2"> Icon :</label>').append(icon)
+                .append('<img src="' + Image + '" width="100px" height="100px"/>')
+                .append('<br/><br/><label class="control-label col-md-2"> Section Type :</label>').append(sectionType)
+                .append('<br/><br/><label class="control-label col-md-2"> Description :</label>').append(aboutEventDescription)
+                .append('<br/><label class="control-label col-md-2"> Is External Link :</label>').append(isExternalLink)
+                .append('<br/><br/><label class="control-label col-md-2"> External Link :</label>').append(externalLink)
+                .append('<br/><br/><label class="control-label col-md-2"> Section Order :</label>').append(sectionOrder)
+                .append(underline).append(spacing);
+        }
+
+
+        $("#DeleteEventinfo").click(function () {
+             var v_id = $("#Event").val();
+            $.ajax({
+                 type: 'POST',
+                 url: '@Url.Action("DeleteEventInfo", "Events")',
+                 dataType: 'json',
+                 data: {id : v_id},
+                 success: function (data)
+                 {
+                     window.location.href = '/Events/Create' + '/' + v_id +'#eventInfo';
+                 },
+                 error: function (error, errorText) {
+                     console.log(error);
+                 }
+            });
+        });
+
+    });
+
+</script>
+
+<div id="eventInfo" class="tab-pane fade in active">
+
+    <h3>Event Information</h3>
+
+    <form action="@Url.Action("AddEventInformation","Events")" method="post" enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <input type="button" value="AddSection" class="btn btn-success AddSection" /> <br />
+        </div>
+        <div class="form-group Event">
+            <input type="hidden" id="Event" name="EventID" value="@ViewBag.eventID" />
+        </div>
+        <div class="form-group AddNewSection" id="AddNewSection"></div> <br />
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-success" /> &nbsp;
+            <input type="button" class="btn btn-warning DeleteEventinfo" value="Delete" id="DeleteEventinfo" />
+        </div>
+
+    </form>
+
+</div>
+
+
+
+@*@model EventManagement.DataAccess.DataBase.Model.EventInfo
+
+    @{
+        Layout = null;
+    }
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#aboutEventIconFile').on('change', function () {
+                imageFormatCheck($(this).val());
+            });
+
+            $('#helpDeskIconFile').on('change', function () {
+                imageFormatCheck($(this).val());
+            });
+
+            $('#accomodationsIconFile').on('change', function () {
+                imageFormatCheck($(this).val());
+            });
+
+            $('#thingsToKnowIconFile').on('change', function () {
+                imageFormatCheck($(this).val());
+            });
+
+            $('#arrivalInfoIconFile').on('change', function () {
+                imageFormatCheck($(this).val());
+            });
+
+            function imageFormatCheck() {
+
+                var ext = arguments[0].split('.').pop();
+
+                if (ext == "" || ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "bmp") {
+                    $("#EventInfoSubmit").removeAttr("disabled");
+                }
+                else {
+                    alert("Only JPG, JPEG, PNG and BMP formattted files are allowed!");
+                    $("#EventInfoSubmit").prop("disabled", true);
+                }
+            }
+        });
+
+    </script>
+
+    <div id="eventInfo" class="tab-pane fade in active">
+        <h3>Event Information</h3>
+        @using (Html.BeginForm("AddEventInfo", "Events", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <input type="hidden" name="ID" value="@ViewBag.eventID" />
+        <div class="form-group">
+            <label class="control-label col-md-2">About Event</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EnableAboutEvent, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EnableAboutEvent, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.AboutEventTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AboutEventTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">icon</label>
+            <div class="col-md-6">
+                <input class="form-control text-box single-line" id="aboutEventIconFile" name="aboutEventIconFile" type="file" value="" @(Model.ID == 0 ? "required" : "") />
+                <img height="100" width="100" src="@MvcCustom.ImagePath(Model.AboutEventIcon)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-6">
+                <textarea id="AboutEventDescription" name="AboutEventDescription" class="form-control" cols="50" rows="15">@Model.AboutEventDescription</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Is External Link</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isAboutEventExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">External Link</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.AboutEventExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div  class="underline" ></div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Help Desk</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EnableAppHelpDesk, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EnableAppHelpDesk, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.HelpDeskTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.HelpDeskTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">icon</label>
+            <div class="col-md-6">
+                <input class="form-control text-box single-line" id="helpDeskIconFile" name="helpDeskIconFile" type="file" value="" @(Model.ID == 0 ? "required" : "") />
+                <img height="100" width="100" src="@MvcCustom.ImagePath(Model.HelpDeskIcon)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Is External Link</label>
+
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isHelpDeskExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">External Link</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.HelpDeskExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="underline"></div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Accomodations</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EnableAccomodations, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EnableAccomodations, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.AccomodationsTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AccomodationsTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">icon</label>
+            <div class="col-md-6">
+                <input class="form-control text-box single-line" id="accomodationsIconFile" name="accomodationsIconFile" type="file" value="" @(Model.ID == 0 ? "required" : "") />
+                <img height="100" width="100" src="@MvcCustom.ImagePath(Model.AccomodationsIcon)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-6">
+                <textarea id="AccomodationsDescription" name="AccomodationsDescription" class="form-control" cols="50" rows="15">@Model.AccomodationsDescription</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Is External Link</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isAccomodationsExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">External Link</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.AccomodationsExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="underline"></div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Things to know</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EnableThingsToKnow, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EnableThingsToKnow, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.ThingsToKnowTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AccomodationsTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">icon</label>
+            <div class="col-md-6">
+                <input class="form-control text-box single-line" id="thingsToKnowIconFile" name="thingsToKnowIconFile" type="file" value="" @(Model.ID == 0 ? "required" : "") />
+                <img height="100" width="100" src="@MvcCustom.ImagePath(Model.ThingsToKnowIcon)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-6">
+                <textarea id="ThingsToKnowDescription" name="ThingsToKnowDescription" class="form-control" cols="50" rows="15">@Model.ThingsToKnowDescription</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Is External Link</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isThingsToKnowExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">External Link</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ThingsToKnowExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="underline"></div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Arrival Information</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EnableArrivalInfo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EnableArrivalInfo, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.ArrivalInfoTitle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ArrivalInfoTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">icon</label>
+            <div class="col-md-6">
+                <input class="form-control text-box single-line" id="arrivalInfoIconFile" name="arrivalInfoIconFile" type="file" value="" @(Model.ID == 0 ? "required" : "") />
+                <img height="100" width="100" src="@MvcCustom.ImagePath(Model.ArrivalInfoIcon)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-6">
+                <textarea id="ArrivalInfoDescription" name="ArrivalInfoDescription" class="form-control" cols="50" rows="15">@Model.ArrivalInfoDescription</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+                <label class="control-label col-md-2">Is External Link</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isArrivalInformationExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">External Link</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ArrivalInformationExternalLink, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id ="EventInfoSubmit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+        }
+    </div>*@
+

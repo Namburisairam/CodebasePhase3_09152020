@@ -1,0 +1,136 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Exhibitor
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+
+                            <h3 class="box-title">Exhibitor</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Edit", "Create", new { id = Model.ID }) |
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.Raw(Model.Name)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.Raw(Model.Description)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.Thumbnail)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DocURL, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.DocURL)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <h5>@Html.DisplayFor(model => model.Status)</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
+    </section>
+</div>
+
+
+
+
+@*@model EventManagement.DataAccess.DataBase.Model.Exhibitor
+
+    @{
+        ViewBag.Title = "Details";
+    }
+
+    <h2>Details</h2>
+
+    <div>
+        <h4>Vendor</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Thumbnail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Thumbnail)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DocURL)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DocURL)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

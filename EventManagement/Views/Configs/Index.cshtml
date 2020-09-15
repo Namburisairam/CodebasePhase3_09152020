@@ -1,0 +1,78 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Config>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string Disabled = string.Empty;
+    string tooltip = string.Empty;
+    if (Model.Count() > 0)
+    {
+        Disabled = "disabled";
+        tooltip = "You Can Create Only One Configuration";
+    }
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>All Configuration</h2>
+            </div>
+            <div class="col-md-2">
+
+                <a href="@Url.Action("Create")"><button title="@tooltip" class="btn btn-primary button" type="button" @Disabled>Create New</button></a>
+            </div>
+            @*<div class="col-md-2">
+                    <text class="btn btn-primary button" data-toggle="modal" data-target="#myModal1">Upload Events</text>
+                </div>*@
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                @*<p>
+                        @Html.ActionLink("Create New", "Create")
+                    </p>*@
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SupportEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Subject)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EmailBody)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SupportEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Subject)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmailBody)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
+                                @Html.ActionLink("Delete", "DeleteConfig", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>
+

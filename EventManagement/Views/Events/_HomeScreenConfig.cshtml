@@ -1,0 +1,169 @@
+﻿<style>
+    .grid-container {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background: grey;
+        overflow-y: auto;
+        width: 500px;
+        margin: auto;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .sidebar .grid-stack-item {
+        text-align: center;
+        line-height: 100px;
+        z-index: 10;
+        cursor: grab;
+        display: inline-block;
+    }
+
+    .grid-stack-item-content {
+        background: white;
+        text-align: center;
+    }
+
+
+    .grid-stack-item .edit {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        cursor: pointer;
+    }
+
+    .grid-stack-item .delete {
+        position: absolute;
+        right: 33px;
+        top: 14px;
+        cursor: pointer;
+    }
+
+    .grid-stack-item .vertical-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+        .grid-stack-item .vertical-center.display-text {
+            margin-top: 0px;
+        }
+
+        
+
+</style>
+<script>
+</script>
+<div id="homeScreenConfig" class="tab-pane tab-pane fade">
+    <br />
+    <button type="button" class="btn btn-success" data-toggle="modal" id="addWidget" data-target="#EditWidget">Add Widget</button>
+    <h3>Configure home page </h3>
+    <section class="darklue" id="demo">
+        <div class="container">
+            <div class="grid-container">
+                <div class="grid-stack grid-stack-2"></div>
+            </div>
+        </div>
+    </section>
+    <br />
+    <form action="@Url.Action("saveWidgetChanges","Events")" method="POST" class="col-md-6">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="EventID" value="@Model.ID" />
+        <input type="hidden" name="widgetsData" id="widgetsData" />
+        <input class="btn btn-primary" id="saveWidgetChanges" type="submit" value="Save Changes" />
+    </form>
+    <button class="btn btn-info pull-right " style="margin-bottom: 19px;" onclick="location.href = '@Url.Action("Index", "WidgetImage", new { eventID = Model.ID })'">Add/Config Image</button>
+    @*@Html.ActionLink("Config Image", "Index", "WidgetImage", new { eventID = Model.ID }, new { })*@
+</div>
+
+<div class="modal fade" id="EditWidget" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Widget  </h4>
+            </div>
+            <div class="modal-body">
+                <form id="homePageConfigForm" action="@Url.Action("AddSaveWidget")" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <input type="hidden" name="EventID" value="@Model.ID" />
+                        <input type="hidden" id="widgetId" name="ID" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Display Name</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="WidgetDisplayName" name="DisplayName" value="" required />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="GalacticActivityId" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Widget Type</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("widgetTypeID", new SelectList(EventManagement.BusinessLogic.Business.AuthLogic.GetWidgetTypeList(), "ID", "WidgetTypeName"), new { id = "widgetType" })
+                            </div>
+                        </div>
+                        <div class="form-group image-type">
+                            <label class="control-label col-md-2">External Link</label>
+                            <div class="col-md-1">
+                                @Html.CheckBox("isExternalLink", new { id = "isWidgetExternalLink" })
+                                @*<input type="checkbox" id="isWidgetExternalLink" name="isExternalLink" />*@
+                            </div>
+                            <div class="col-md-9">
+                                <input class="form-control text-box single-line" id="widgetExternalLink" name="ExternalLink" value="true" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="screenTypeContainer">
+                            <label class="control-label col-md-2">Screen Type</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("WidgetID", new SelectList(EventManagement.BusinessLogic.Business.AuthLogic.GetWidgetList(), "ID", "Name"), new { id = "screenType", required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group image-type">
+                            <label class="control-label col-md-2">Upload Image</label>
+                            <div class="col-md-10">
+                                <input type="file" id="widgetImage" name="widgetImageFile">
+                                <img src="@MvcCustom.ImagePath("")" id="widgetImagePreview" height="100" width="100" />
+                            </div>
+                        </div>
+                        <div class="form-group image-type">
+                            <label class="control-label col-md-2">Font Color</label>
+                            <div class="col-md-6 input-group colorpicker-component" id="fc" >
+                                <input type="text" class="form-control" name="Color" id="fontColor" style="margin-left: 15px;" />
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Font Size</label>
+                            <div class="col-md-10">
+                                <input class="form-control text-box single-line" id="fontSize" name="FontSize" value="" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Justification</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="Justification" id="justification">
+                                    <option value="Center" >Center</option>
+                                    <option value="Left">Left</option>
+                                    <option value="Right" >Right</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input id="widgetEditUpdate" type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

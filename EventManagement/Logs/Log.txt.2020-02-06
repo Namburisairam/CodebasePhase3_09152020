@@ -1,0 +1,16 @@
+﻿2020-02-06 15:24:17,325 ERROR [105] CommonHelpers.Helpers.LogError - Event Error
+EventManagement.BusinessLogic.Classes.GalacticEventExistsException: Event with Galactic id already exist
+   at EventManagement.BusinessLogic.Business.EventLogic.<AddUpdateEvent>d__19.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\EventLogic.cs:line 623
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.EventsController.<Create>d__49.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 975
+2020-02-06 17:06:38,458 ERROR [34] CommonHelpers.Helpers.LogError - Event Error
+EventManagement.BusinessLogic.Classes.GalacticEventExistsException: Event with Galactic id already exist
+   at EventManagement.BusinessLogic.Business.EventLogic.<AddUpdateEvent>d__19.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement.BusinessLogic\Business\EventLogic.cs:line 623
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at EventManagement.Controllers.EventsController.<Create>d__49.MoveNext() in D:\Galactic DEV _06 TFS\Galactic\Event Application\CMS App\Dev\UI\EventManagementPortal-master\EventManagement\Controllers\EventsController.cs:line 975

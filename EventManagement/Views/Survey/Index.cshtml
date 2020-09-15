@@ -1,0 +1,1183 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.TemplateSurvey>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var selectedTemplateID = ViewContext.RouteData.Values["id"];
+}
+
+@section Script{
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @*<link href="~/Scripts/css/JqeuryEditableSelect.css" rel="stylesheet" />
+        <script src="~/Scripts/JqueryEditableSelect.js"></script>*@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+    $(document).ready(function () {
+        $('.surveyEventActivity').hide();
+        $('.surveyEvent').hide();
+        $('.TemplateEventActivity').hide();
+        $('.TemplateEvent').hide();
+        var Tid = $("#SelectTemplate option:selected").val();
+        var TName = $("#SelectTemplate option:selected").text();
+        $("#Templateid").val(Tid);
+        $("#TemplateName").val(TName);
+        $("#TSurveyID").val(Tid);
+
+        var QuestionData;
+        var optionsCount;
+        var SQuestionData;
+
+        if ($("#SelectTemplate option:selected").text() == "New")
+        {
+            $("#mapTemplateQuestions").prop('disabled', true);
+            $("#DeleteTemplate").prop('disabled', true);
+            $("#ReplicateSurvey").prop('disabled', true);
+        }
+
+        if ($("#SurveyList option:selected").text() == "New")
+        {
+            $("#SurveyQuestion").prop('disabled', true);
+            $("#DeleteSurvey").prop('disabled', true);
+        }
+
+        //$("#SaveTemplateData").click(function ()
+        //{
+        //    if ($("#TemplateLevel option:selected").val() == "Event")
+        //    {
+        //        $("#TemplateEventActivityID").val('');
+        //    }
+        //    else if ($("#TemplateLevel option:selected").val() == "Activity") {
+        //        $("#TemplateEventID").val('');
+        //    }
+        //    else
+        //    {
+        //        $("#TemplateEventActivityID").val('');
+        //        $("#TemplateEventID").val('');
+        //    }
+        //});
+
+
+        $("#Savesurveydata").click(function () {
+
+            if ($("#SurveyLevel option:selected").val() == "Event Level")
+            {
+                $("#SurveyEventActivityID").val('');
+                $("#surveySponsorID").val('');
+                $("#surveyVendorID").val('');
+            }
+            else if ($("#SurveyLevel option:selected").val() == "Activity Level")
+            {
+                $("#surveySponsorID").val('');
+                $("#surveyVendorID").val('');
+                //var eventID = $("#SurveyEventID option:selected").val();
+                //$("#SurveyEventID").val(eventID);
+                //var activityID = $("#SurveyEventActivityID option:selected").val();
+                //$("#SurveyEventActivityID").val(activityID);
+            }
+            else if($("#SurveyLevel option:selected").val() == "App Level")
+            {
+                $("#SurveyEventActivityID").val('');
+                $("#surveySponsorID").val('');
+                $("#surveyVendorID").val('');
+            }
+            else if($("#SurveyLevel option:selected").val() == "Vendor Level")
+            {
+                $("#SurveyEventActivityID").val('');
+                $("#surveySponsorID").val('');
+            }
+            else if($("#SurveyLevel option:selected").val() == "Sponsor Level")
+            {
+                $("#SurveyEventActivityID").val('');
+                $("#surveyVendorID").val('');
+            }
+        });
+
+        $("#AddBtn").on("click", function () {
+                //var question = $("#TemplateQuestionID").val();
+                //for (i = 0; i < QuestionData.length; i++)
+                //{
+                //    if (QuestionData[i].QID == question)
+                //    {
+                //        optionsCount = QuestionData[i].options.length
+                //    }
+                //}
+                //QuestionwithOptions(null, optionsCount);
+            //$("#AddOptions").append("<div><br><input class='form-control text-box single-line' id='Options' name='Options' type='text'/><button type='button' class='btn btn-danger' id='DeleteOption'> Delete</button> <br></div>");
+            $("#AddOptions").append("<div><input class='form-control text-box single-line' name='Options' type='text'/><br/><button type='button' class='btn btn-danger' id='DeleteOption'> Delete</button></div><br/>");
+            });
+
+        $("#AddSurveyQuestionsBtn").on("click", function() {
+                $("#AddSurveyQuestionOptions").append("<div><input class='form-control text-box single-line' id='SOptions' name='SOptions' type='text' required /><br/><button type='button' class='btn btn-danger' id='DeleteSurveyOption'> Delete</button></div><br/>");
+            });
+
+        function DeleteTempQuestions() {
+            $(".DeleteTemplateQuestion").click(function () {
+                var QID = $(this).attr("data-id");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteTemplateQuestion", "Survey")',
+                    dataType: 'json',
+                    data: {id : QID},
+                    success: function (data)
+                    {
+                        var selectedTemplate = $('#SelectTemplate').val();
+                        window.location.href = '/Survey/Index' + '/' + selectedTemplate;
+                    }
+                });
+                window.location.reload();
+            });
+        }
+
+        $("#SurveyLevel").change(function ()
+        {
+            var surveyLevelSelected = $('#SurveyLevel').val();
+            var eventID = $("#surveyEvent option:selected").val();
+            if (surveyLevelSelected == "Event Level") {
+                $('.surveyEventActivity').hide();
+                $('.surveyVendors').hide();
+                $('.surveySponsors').hide();
+                $('.surveyEvent').show();
+                $('#surveyEventActivity').val('');
+
+
+            }
+            else if (surveyLevelSelected == "App Level") {
+                $('.surveyEventActivity').hide();
+                $('.surveyEvent').show();
+                $('.surveyVendors').hide();
+                $('.surveySponsors').hide();
+                $('#surveyEventActivity').val('');
+            }
+            else if (surveyLevelSelected == "Activity Level") {
+                $('.surveyEvent').show();
+                $('.surveyEventActivity').show();
+                $('.surveyVendors').hide();
+                $('.surveySponsors').hide();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventActivities","Survey")',
+                    dataType: 'json',
+                    data: {EventID : eventID},
+                    success: function (response) {
+                        var len = response.length;
+                        $("#SurveyEventActivityID").empty();
+                        for (var i = 0; i < len; i++) {
+                            var activtyID = response[i].ActivityId;
+                            var ActivityName = response[i].ActivityName;
+                            $("#SurveyEventActivityID").append("<option value='" + activtyID + "'>" + ActivityName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+
+            else if (surveyLevelSelected == "Vendor Level")
+            {
+                $('.surveyEvent').show();
+                $('.surveyEventActivity').hide();
+                $('.surveyVendors').show();
+                $('.surveySponsors').hide();
+                var event = $("#SurveyEventID").val();
+                 $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventVendors","Survey")',
+                    dataType: 'json',
+                    data: {EventID : event},
+                    success: function (response) {
+                        var len = response.length;
+                        $("#surveyVendorID").empty();
+                        for (var i = 0; i < len; i++)
+                        {
+                            vendorID = response[i].vendorID;
+                            vendorName = response[i].vendorName;
+                            $("#surveyVendorID").append("<option value='" + vendorID + "'>" + vendorName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+
+            else if (surveyLevelSelected == "Sponsor Level")
+            {
+                $('.surveyEvent').show();
+                $('.surveyEventActivity').hide();
+                $('.surveyVendors').hide();
+                $('.surveySponsors').show();
+                var event = $("#SurveyEventID").val();
+                 // console.log(event);
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventSponsors","Survey")',
+                    dataType: 'json',
+                    data: {EventID : event},
+                     success: function (response) {
+                         //console.log(response);
+                        var len = response.length;
+                        $("#surveySponsorID").empty();
+                        for (var i = 0; i < len; i++)
+                        {
+                            sponsorID = response[i].sponsorId;                            
+                            sponsorName = response[i].sponsorName;                            
+                            $("#surveySponsorID").append("<option value='" + sponsorID + "'>" + sponsorName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+
+
+            else {
+                $('.surveyEvent').hide();
+                $('.surveyEventActivity').hide();
+                $('.surveyVendors').hide();
+                $('.surveySponsors').hide();
+            }
+        });
+
+         @*$("#TemplateLevel").change(function () {
+            var templateLevelSelected = $('#TemplateLevel').val();
+            if (templateLevelSelected == "Event") {
+                $('.TemplateEventActivity').hide();
+                $('.TemplateEvent').show();
+                $('#TemplateEventActivity').val('');
+            }
+            else if (templateLevelSelected == "Activity") {
+                $('.TemplateEvent').hide();
+                $('.TemplateEventActivity').hide();
+                $('#TemplateEvent').val('');
+                    $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventActivities","Survey")',
+                    dataType: 'json',
+                    data: {id : QID},
+                    success: function (response) {
+                        var len = response.length;
+                        //$("#TemplateEventActivityID").empty();
+                        for (var i = 0; i < len; i++) {
+                            var activtyID = response[i].activtyID;
+                            var ActivityName = response[i].ActivityName;
+                            $("#TemplateEventActivityID").append("<option value='" + activtyID + "'>" + ActivityName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+            else {
+                $('.TemplateEvent').hide();
+                $('.TemplateEventActivity').hide();
+            }
+
+        });*@
+
+        $('#mapTemplateQuestions').click(function () {
+            var TQID = $("#TQuestionID").val();
+            $("#TemplateQuestionID").val(TQID);
+            //$("#TemplateQuestionID").val('');
+            var TemplateID = $("#SelectTemplate option:selected").val();
+            $("#TSurveyID").val(TemplateID);
+            //$("#AddTQ").empty();
+            $("#AddOptions").empty();
+            $("#TQuestionText").val('');
+            });
+
+        $("#ReplicateSurvey").click(function () {
+                var TemplateID = $("#SelectTemplate option:selected").val();
+                 $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ReplicateTemplate", "Survey")',
+                    dataType: 'json',
+                    data: {id : TemplateID},
+                     success: function (data) {
+                         window.location.href = '/Survey/Index' + '/' + TemplateID;
+                    }
+                 });
+                window.location.reload();
+            });
+
+        $(".SurveyEventID").change(function () {
+            var selectedEvent = $(".SurveyEventID option:selected").val();
+            var selectedLevel = $("#SurveyLevel option:selected").val();
+            if(selectedLevel == "Activity Level")
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventActivities","Survey")',
+                    dataType: 'json',
+                    data: { EventID: selectedEvent },
+                    success: function (response) {
+                        var len = response.length;
+                        $("#SurveyEventActivityID").empty();
+                        for (var i = 0; i < len; i++) {
+                            var activtyID = response[i].ActivityId;
+                            var ActivityName = response[i].ActivityName;
+                            $("#SurveyEventActivityID").append("<option value='" + activtyID + "'>" + ActivityName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+            else if (selectedLevel == "Vendor Level")
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventVendors","Survey")',
+                    dataType: 'json',
+                    data: {EventID : selectedEvent},
+                    success: function (response) {
+                        var len = response.length;
+                        $("#surveyVendorID").empty();
+                        for (var i = 0; i < len; i++)
+                        {
+                            vendorID = response[i].vendorID;
+                            vendorName = response[i].vendorName;                            
+                            $("#surveyVendorID").append("<option value='" + vendorID + "'>" + vendorName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+            else if(selectedLevel == "Sponsor Level")
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetEventSponsors","Survey")',
+                    dataType: 'json',
+                    data: {EventID : selectedEvent},
+                     success: function (response) {
+                         console.log(response);
+                        var len = response.length;
+                        $("#surveySponsorID").empty();
+                        for (var i = 0; i < len; i++)
+                        {
+                            sponsorID = response[i].sponsorId;
+                            sponsorName = response[i].sponsorName;                            
+                            $("#surveySponsorID").append("<option value='" + sponsorID + "'>" + sponsorName + "</option>");
+                        }
+                    },
+                    error: function (error, errorText) {
+                        console.log(errorText);
+                    }
+                });
+            }
+            else
+            { 
+            
+            }
+         });
+
+        $("#SurveyQuestion").click(function () {
+                var surveySelected = $("#SurveyList option:selected").val();
+                $("#S_QID").val(surveySelected);
+                $("#SurveyQuestionID").val('');
+                $("#SQuestionText").val('');
+                $("#AddSurveyQuestionOptions").empty();
+            });
+
+        $("#DeleteTemplate").click(function () {
+            var result = confirm("Do you want to delete the template?");
+            if (result) {
+                var templateID = $("#SelectTemplate option:selected").val();
+                $('#SelectTemplate').find('option:contains(templateID)').remove();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("DeleteTemplate", "Survey")',
+                    dataType: 'json',
+                    data: { id: templateID },
+                    success: function (data) {
+                    }
+                });
+                //GetAllTemplates();
+                location.reload();
+            }
+        });
+
+        function DeleteTemplateoptionsfunction(){
+            $(".DeleteTemplateOption").click(function () {
+            var OptionID = $(this).attr("data-id");
+            var templateQuestionID = $("#TemplateQuestionID").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteTemplateOptions", "Survey")',
+                    dataType: 'json',
+                    data: {TOID: OptionID,TQID:templateQuestionID },
+                    success: function (response) {
+                    }
+                });
+                window.location.reload();
+            });
+        };
+
+        @*function GetAllTemplates()
+        {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllTemplates", "Survey")',
+                dataType: 'json',
+                success: function (response)
+                {
+                    console.log(response);
+                }
+            });
+        }*@
+
+        function DeleteSurveyoptionsfunction(){
+            $(".DeleteOptions").click(function () {
+            var SOptionID = $(this).attr("data-id");
+            var surveyQuestionID = $("#SurveyQuestionID").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteSurveyOptions", "Survey")',
+                    dataType: 'json',
+                    data: {SOID: SOptionID,SQID:surveyQuestionID },
+                    success: function (response) {
+                        if (response.success)
+                        {
+                            window.location.reload();
+                        }
+                    }
+                });
+            });
+        };
+
+        $("#DeleteSurvey").click(function () {
+            var result = confirm("Do you want to delete the survey?");
+
+            if (result) {
+            var surveyID = $("#SurveyList option:selected").val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteSurvey", "Survey")',
+                dataType: 'json',
+                data: { id: surveyID },
+                success: function (data) {
+                }
+            });
+            window.location.reload();
+        }
+        });
+        $("#SurveyList").change(function () {
+            $("#AddSQ").empty();
+            var survey_ID = $("#SurveyList option:selected").val();
+            if ($("#SurveyList option:selected").val() == "") {
+                $('.surveyEventActivity').hide();
+                $('.surveyEvent').hide();
+                $("#SurveyName").val('');
+                $("#SurveyDescription").val('');
+                $("#SurveyLevel").val('');
+                $("#SurveyTemplate").val('');
+                $("#SurveyID").val('');
+                $("#SurveyQuestion").prop("disabled", true);
+                $("#DeleteSurvey").prop("disabled", true);
+                $("#SurveyEventID").prop("disabled", false);
+                $("#SurveyLevel").prop("disabled", false);
+                $("#SurveyEventActivityID").prop("disabled", false);
+                $("#SurveyTemplate").prop("disabled", false);
+                $("#surveyVendorID").prop("disabled", false);
+                $("#surveySponsorID").prop("disabled", false);
+            }
+            //else if ($("#SurveyList option:selected").text() == "New")
+            //{
+            //    $("#SurveyQuestion").prop("disabled", false);
+            //    $("#SurveyEventID").removeAttr();
+            //    $("#SurveyLevel").removeAttr();
+            //    $("#SurveyEventActivityID").removeAttr();
+            //    $("#SurveyTemplate").removeAttr();
+            //}
+            else if ($("#SurveyList option:selected").text() != "")
+            {
+                $("#SurveyQuestion").prop("disabled", false);
+                $("#DeleteSurvey").prop("disabled", false);
+                $("#SurveyEventID").prop("disabled", true);
+                $("#SurveyLevel").prop("disabled", true);
+                $("#SurveyEventActivityID").prop("disabled", true);
+                $("#SurveyTemplate").prop("disabled", true);
+                $("#surveyVendorID").prop("disabled", true);
+                $("#surveySponsorID").prop("disabled", true);
+            }
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSurveyData", "Survey")',
+                dataType: 'json',
+                data: { SurveyID: survey_ID },
+                success: function (response) {
+                    console.log(response);
+                    var len = response.length;
+                    for (var i = 0; i < len; i++) {
+
+                        if (response[i].SurveyLevel == "Event Level") {
+                            $('.surveyEvent').show();
+                            $('.surveyEventActivity').hide();
+                            $('.surveyVendors').hide();
+                            $('.surveySponsors').hide();
+                        }
+                        else if (response[i].SurveyLevel == "Activity Level") {
+                            $('.surveyEventActivity').show();
+                            $('.surveyEvent').show();
+                            $('.surveyVendors').hide();
+                            $('.surveySponsors').hide();
+                        }
+                        else if (response[i].SurveyLevel == "Vendor Level") {
+                            $('.surveyEventActivity').hide();
+                            $('.surveyEvent').show();
+                            $('.surveyVendors').show();
+                            $('.surveySponsors').hide();
+                        }
+                        else if (response[i].SurveyLevel == "Sponsor Level"){
+                            $('.surveyEventActivity').hide();
+                            $('.surveyEvent').show();
+                            $('.surveyVendors').hide();
+                            $('.surveySponsors').show();
+                        }
+                        else {
+                            $('.surveyEvent').show();
+                            $('.surveyEventActivity').hide();
+                            $('.surveyVendors').hide();
+                            $('.surveySponsors').hide();
+                        }
+                        $("#SurveyID").val(response[i].SurveyID);
+                        $("#SurveyName").val(response[i].SurveyName);
+                        $("#SurveyDescription").val(response[i].SurveyDescription);
+                        $("#SurveyLevel").val(response[i].SurveyLevel);
+                        $("#SurveyTemplate").val(response[i].TemplateID);
+                        $("#SurveyEventID").val(response[i].EventID);
+                        $("#SurveyEventActivityID").val(response[i].ActivityID);
+                        $("#surveyVendorID").val(response[i].VendorID);
+                        $("#surveySponsorID").val(response[i].SponsorID);
+                        var Qcount = response[i].QuestionsOptions.length;
+                        for (var j = 0; j < Qcount; j++) {
+                            var Question = "<div >" + response[i].QuestionsOptions[j].QuestionText + "</div> ";
+                            if (response[i].QuestionsOptions[j].QuestionResponseType == "1") {
+                                var optionscount = response[i].QuestionsOptions[j].options.length;
+                                $("#AddSQ").append(Question);
+                                for (var k = 0; k < optionscount; k++) {
+                                    $("#AddSQ").append("<input type='radio' name='radiobutton2' value='" + response[i].QuestionsOptions[j].options[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].options[k].OptionText + "<br/>");
+                                }
+                                $("#AddSQ").append("<input type='button' class='btn btn-danger DeleteSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' value='Delete'/> <input type='button' class='btn btn-warning EditSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' data-toggle='modal' data-target='#AddSurveyQuestions' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].QuestionResponseType == "2") {
+                                var optionscount = response[i].QuestionsOptions[j].options.length;
+                                $("#AddSQ").append(Question);
+                                for (var k = 0; k < optionscount; k++) {
+                                    $("#AddSQ").append("<input type='checkbox' value='" + response[i].QuestionsOptions[j].options[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].options[k].OptionText + "<br/>");
+                                }
+                                $("#AddSQ").append("<input type='button' class='btn btn-danger DeleteSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' value='Delete'/> <input type='button' class='btn btn-warning EditSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' data-toggle='modal' data-target='#AddSurveyQuestions' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].QuestionResponseType == "4") {
+                                var optionscount = response[i].QuestionsOptions[j].options.length;
+                                $("#AddSQ").append(Question);
+                                for (var k = 0; k < optionscount; k++) {
+                                    $("#AddSQ").append("<input type='checkbox' value='" + response[i].QuestionsOptions[j].options[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].options[k].OptionText + "<br/>");
+                                }
+                                $("#AddSQ").append("<input type='button' class='btn btn-danger DeleteSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' value='Delete'/> <input type='button' class='btn btn-warning EditSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' data-toggle='modal' data-target='#AddSurveyQuestions' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].QuestionResponseType == "3") {
+                                var optionscount = response[i].QuestionsOptions[j].options.length;
+                                $("#AddSQ").append(Question);
+                                //for (var k = 0; k < opSurveyEventIDsurbeyeventtionscount; k++) {
+                                    $("#AddSQ").append("<input type='text' value=''/> &nbsp; <br/>");
+                                //}
+                                $("#AddSQ").append("<input type='button' class='btn btn-danger DeleteSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' value='Delete'/> <input type='button' class='btn btn-warning EditSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' data-toggle='modal' data-target='#AddSurveyQuestions' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].QuestionResponseType == "5") {
+                                var optionscount = response[i].QuestionsOptions[j].options.length;
+                                $("#AddSQ").append(Question);
+                                $("#AddSQ").append("<span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span> <br/>")
+                                //for (var k = 0; k < optionscount; k++) {
+                                //    $("#AddSQ").append("<input type='checkbox' value='" + response[i].QuestionsOptions[j].options[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].options[k].OptionText + "<br/>");
+                                //}
+                                $("#AddSQ").append("<input type='button' class='btn btn-danger DeleteSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' value='Delete'/> <input type='button' class='btn btn-warning EditSurveyQuestion' data-id='" + response[i].QuestionsOptions[j].QID + "' data-toggle='modal' data-target='#AddSurveyQuestions' value='Edit'>");
+                            }
+                        }
+                        SurveyQuestionfunction();
+                        DeleteSurveyquestions();
+                    }
+                },
+                error: function (error, errorText) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $(".SelectTemplate").change(function () {
+            $("#AddTQ").empty();
+            if ($("#SelectTemplate option:selected").text() == "New")
+            {
+                $("#mapTemplateQuestions").attr('disabled', true);
+                $("#DeleteTemplate").attr('disabled', true);
+                $("#TemplateLevel").prop('disabled', false);
+                $("#ReplicateSurvey").prop('disabled', true);
+            }
+            else
+            {
+                $("#mapTemplateQuestions").removeAttr("disabled");
+                $("#DeleteTemplate").removeAttr("disabled");
+                $("#TemplateLevel").prop('disabled', true);
+                $("#ReplicateSurvey").removeAttr("disabled");
+            }
+            var Template_ID = $("#SelectTemplate option:selected").val();
+            $("#Templateid").val(Template_ID);
+            if ($("#SelectTemplate option:selected").val() == "")
+            {
+                $("#TemplateName").val('');
+                $("#TemplateDescription").val('');
+                $("#TemplateLevel").val('');
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetTemplateData", "Survey")',
+                dataType: 'json',
+                data: { templateID: Template_ID },
+                success: function (response)
+                {
+                    var len = response.length;
+                    console.log(response);
+                    for (var i = 0; i < len; i++) {
+
+                        //if (response[i].TemplateLevel == "Event") {
+                        //    $('.TemplateEvent').show();
+                        //    $('.TemplateEventActivity').hide();
+                        //}
+                        //else if (response[i].TemplateLevel == "Activity") {
+                        //    $('.TemplateEvent').hide();
+                        //    $('.TemplateEventActivity').show();
+                        //}
+                        //else {
+                        //    $('.TemplateEvent').hide();
+                        //    $('.TemplateEventActivity').hide();
+                        //}
+                        $("#TemplateName").val(response[i].TemplateName);
+                        $("#TemplateDescription").val(response[i].TemplateDescription);
+                        $("#TemplateLevel").val(response[i].TemplateLevel);
+                        //$("#TemplateEventID").val(response[i].EventID);
+                        //$("#TemplateEventActivityID").val(response[i].ActivityID);
+                        var TQcount = response[i].QuestionsOptions.length;
+                        for (var j = 0; j < TQcount; j++) {
+                            var TQuestion = "<div >" + response[i].QuestionsOptions[j].TQuestionText + "</div> ";
+                            if (response[i].QuestionsOptions[j].TQuestionResponseType == "1") {
+                                var Toptionscount = response[i].QuestionsOptions[j].TQoptions.length;
+                                $("#AddTQ").append(TQuestion);
+                                for (var k = 0; k < Toptionscount; k++) {
+                                    $("#AddTQ").append("<input type='radio' name='radiobutton1' value='" + response[i].QuestionsOptions[j].TQoptions[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].TQoptions[k].OptionText + "<br/>");
+                                }
+                                $("#AddTQ").append("<input type='button' class='btn btn-danger DeleteTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' value='Delete'/> <input type='button' class='btn btn-warning EditTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' data-toggle='modal' data-target='#AddNewQuestion' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].TQuestionResponseType == "2") {
+                                var Toptionscount = response[i].QuestionsOptions[j].TQoptions.length;
+                                $("#AddTQ").append(TQuestion);
+                                for (var k = 0; k < Toptionscount; k++) {
+                                    $("#AddTQ").append("<input type='checkbox' value='" + response[i].QuestionsOptions[j].TQoptions[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].TQoptions[k].OptionText + "<br/>");
+                                }
+                                $("#AddTQ").append("<input type='button' class='btn btn-danger DeleteTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' value='Delete'/> <input type='button' class='btn btn-warning EditTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' data-toggle='modal' data-target='#AddNewQuestion' value='Edit'>");
+                            }
+                            else if (response[i].QuestionsOptions[j].TQuestionResponseType == "4") {
+                                var Toptionscount = response[i].QuestionsOptions[j].TQoptions.length;
+                                $("#AddTQ").append(TQuestion);
+                                for (var k = 0; k < Toptionscount; k++) {
+                                    $("#AddTQ").append("<input type='checkbox' value='" + response[i].QuestionsOptions[j].TQoptions[k].OptionID + "'/> &nbsp;" + response[i].QuestionsOptions[j].TQoptions[k].OptionText + "<br/>");
+                                }
+                                $("#AddTQ").append("<input type='button' class='btn btn-danger DeleteTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' value='Delete'/> <input type='button' class='btn btn-warning EditTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' data-toggle='modal' data-target='#AddNewQuestion' value='Edit'>");
+                            }
+
+                            else if (response[i].QuestionsOptions[j].TQuestionResponseType == "3") {
+                                var Toptionscount = response[i].QuestionsOptions[j].TQoptions.length;
+                                $("#AddTQ").append(TQuestion);
+                                //for (var k = 0; k < Toptionscount; k++) {
+                                    $("#AddTQ").append("<input type='text' value=''/> &nbsp; <br/>");
+                                //}
+                                $("#AddTQ").append("<input type='button' class='btn btn-danger DeleteTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' value='Delete'/> <input type='button' class='btn btn-warning EditTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' data-toggle='modal' data-target='#AddNewQuestion' value='Edit'>");
+                            }
+
+                            else if (response[i].QuestionsOptions[j].TQuestionResponseType == "5") {
+                                 var Toptionscount = response[i].QuestionsOptions[j].TQoptions.length;
+                                $("#AddTQ").append(TQuestion);
+                                 $("#AddTQ").append("<span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span> <br/>")
+
+                                //for (var k = 0; k < Toptionscount; k++) {
+                                //    $("#AddTQ").append("<input type='text' value=''/> &nbsp;" + response[i].QuestionsOptions[j].TQoptions[k].OptionText + "<br/>");
+                                //}
+                                $("#AddTQ").append("<input type='button' class='btn btn-danger DeleteTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' value='Delete'/> <input type='button' class='btn btn-warning EditTemplateQuestion' data-id='" + response[i].QuestionsOptions[j].TQID + "' data-toggle='modal' data-target='#AddNewQuestion' value='Edit'>");
+                            }
+                        }
+                        TemplateQuestionfunction();
+                        DeleteTempQuestions();
+                    }
+                }
+            });
+        });
+
+        function TemplateQuestionfunction()
+        {
+           $(".EditTemplateQuestion").click(function () {
+           $("#AddOptions").empty();
+               var TQID = $(this).attr("data-id");
+                $("#TSurveyID").val('');
+               var temp_TID = $("#Templateid").val();
+               QuestionData = @{@Html.Raw(Json.Encode(ViewBag.TemplateQuestionOptions))};
+               console.log(QuestionData);
+               for (var i = 0; i < QuestionData.length; i++)
+               {
+                   if (QuestionData[i].QID == TQID)
+                   {
+                       $("#TSurveyID").val(temp_TID);
+                       $('#TQuestionText').val(QuestionData[i].QuestionText);
+                       $('#ResponseType').val(QuestionData[i].QuestionResponseType);
+                       for (var j = 0; j < QuestionData[i].options.length; j++)
+                       {
+                           QuestionwithOptions(QuestionData[i].options[j].OptionText, QuestionData[i].options[j].OptionID);
+                       };
+                       $('#TemplateQuestionID').val(QuestionData[i].QID);
+                   }
+               }
+               DeleteTemplateoptionsfunction();
+            });
+        }
+
+        function QuestionwithOptions(text,index)
+           {
+               //var optiondata = $('<input class="form-control text-box single-line" name="Options[' + index + ']"/>').val(text);
+            var optiondata = $('<input class="form-control text-box single-line" name="Options"/>').val(text);
+            $('#AddOptions').append(optiondata).append('<input type="button" class="btn btn-danger DeleteTemplateOption" value="Delete" data-id=' + index + ' />');
+        };
+
+        function SurveyQuestionfunction() {
+
+            $(".EditSurveyQuestion").click(function () {
+                $("#AddSurveyQuestionOptions").empty();
+                $("#S_QID").val('');
+                var Q_surveyID = $("#SurveyID").val()
+                $("#AddSurveyQuestionsBtn").empty();
+                 var SQID = $(this).attr("data-id");
+                 SQuestionData = @{@Html.Raw(Json.Encode(ViewBag.SurveyQuestionOptions))};
+                 for (var i = 0; i < SQuestionData.length; i++)
+                 {
+                     if (SQuestionData[i].QID == SQID)
+                     {
+                         $("#S_QID").val(Q_surveyID);
+                         $("#SurveyQuestionID").val(SQuestionData[i].QID);
+                         $('#SQuestionText').val(SQuestionData[i].QuestionText);
+                         $('#SQuestionResponseType').val(SQuestionData[i].QuestionResponseType);
+                         for (var j = 0; j < SQuestionData[i].options.length; j++)
+                         {
+                             SurveyQuestionwithOptions(SQuestionData[i].options[j].OptionText, SQuestionData[i].options[j].OptionID);
+                         };
+
+                         $('#SurveyQuestionID').val(SQuestionData[i].QID);
+                     }
+                }
+                DeleteSurveyoptionsfunction();
+            });
+        };
+
+        function SurveyQuestionwithOptions(text, index) {
+            //var optiondata = $('<input class="form-control text-box single-line" name="SOptions[' + index + ']"/>').val(text);
+
+             var optiondata = $('<input class="form-control text-box single-line" name="SOptions"/>').val(text);
+
+            $('#AddSurveyQuestionOptions').append('<div>').append(optiondata).append('<br/><input type="button" value="Delete" class="btn btn-danger DeleteOptions" data-id="' + index + '"/><br/></div><br/>');
+        };
+
+        function DeleteSurveyquestions() {
+            $(".DeleteSurveyQuestion").click(function () {
+                var SQID = $(this).attr("data-id");
+                $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteSurveyQuestions", "Survey")',
+                        dataType: 'json',
+                        data: {id : SQID},
+                        success: function (data)
+                        {
+                        }
+                });
+                window.location.reload();
+            });
+        }
+
+    });
+    </script>
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a data-toggle="tab" href="#Template">Template</a></li>
+                    <li><a data-toggle="tab" href="#Survey">Survey</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="Template" class="tab-pane fade in active">
+                <div class="row topbar">
+                    <div class="col-md-10">
+                        <br>
+                        <h2>Survey Template</h2> <br>
+                        <div class="col-md-10">
+                            <select class="form-control SelectTemplate" name="SelectTemplate" id="SelectTemplate">
+                                <option value="">New</option>
+
+                                @foreach (var item in ViewBag.Templates as IEnumerable<EventManagement.DataAccess.DataBase.Model.TemplateSurvey>)
+                                {
+                                    <option value="@item.TSurveyID"> @item.TSurveyName</option>
+                                    @*if (Convert.ToInt32(selectedTemplateID) == item.TSurveyID)
+                                        {
+                                            <option value="@item.TSurveyID" selected> @item.TSurveyName</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@item.TSurveyID"> @item.TSurveyName</option>
+                                        }*@
+                                }
+                            </select>
+                        </div>
+                        <input type="button" class="btn btn-success" id="ReplicateSurvey" value="Replicate" />
+
+                    </div>
+                    <form action="@Url.Action("SaveTemplate","Survey")" method="post">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="hidden" name="Templateid" id="Templateid" value="" /> <br />
+                            </div>
+                        </div> <br />
+
+                        <div class="form-group col-md-10">
+                            <label class="control-label col-md-2" for="TemplateName">Template Name</label>
+                            <div class="col-md-10">
+                                <input type="text" name="TemplateName" id="TemplateName" value="" />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="TemplateName" data-valmsg-replace="true"></span>
+                            </div>
+                        </div> <br />
+
+                        <div class="form-group col-md-10">
+                            <label class="control-label col-md-2" for="TemplateLevel">Template Level</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="TemplateLevel" id="TemplateLevel">
+                                    <option value="">--Select--</option>
+                                    <option>Event</option>
+                                    <option>Activity</option>
+                                    <option>App</option>
+                                    <option>Vendor</option>
+                                    <option>Sponsor</option>
+                                </select>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="TemplateLevel" data-valmsg-replace="true"></span>
+                            </div>
+                        </div><br />
+
+                        <div class="form-group col-md-10">
+                            <label class="control-label col-md-2" for="TemplateDescription">Template Description</label>
+                            <div class="col-md-10">
+                                <input type="text" id="TemplateDescription" name="TemplateDescription" />
+                                <span class="field-validation-valid text-danger" data-valmsg-for="TemplateDescription" data-valmsg-replace="true"></span>
+                            </div>
+                        </div> <br />
+
+                        @*<div class="form-group col-md-10 TemplateEvent" id="TemplateEvent">
+                                <label class="control-label col-md-2" for="TemplateEventID">Event</label>
+                                <select class="form-control TemplateEventID" name="TemplateEventID" id="TemplateEventID">
+                                    @foreach (var item in ViewBag.Events as IEnumerable<EventManagement.BusinessLogic.Models.EventSurveyData>)
+                                    {
+                                        <option value="@item.EventID"> @item.EventName</option>
+                                    }
+                                </select>
+                            </div> <br />
+
+                            <div class="form-group col-md-10 TemplateEventActivity" id="TemplateEventActivity">
+                                <label class="control-label col-md-2" for="TemplateEventActivityID">Activity</label>
+                                <select class="form-control" name="TemplateEventActivityID" id="TemplateEventActivityID">
+                                    @foreach (var item in ViewBag.Activities as IEnumerable<EventManagement.BusinessLogic.Models.SurveyEventActivities>)
+                                    {
+                                        <option value="@item.ActivityId"> @item.ActivityName</option>
+                                    }
+                                </select>
+                            </div>*@
+
+                        <div class="form-group col-md-10">
+                            <div id="AddTQ"></div>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="submit" class="btn btn-success" id="SaveTemplateData" value="Save" />&nbsp;
+                                <input type="button" class="btn btn-success" data-toggle="modal" data-target="#AddNewQuestion" id="mapTemplateQuestions" value="Add Question" />&nbsp;
+                                <input type="button" class="btn btn-danger" id="DeleteTemplate" value="Delete Template" />
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal fade" id="AddNewQuestion" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Add/Edit Question</h4>
+                                </div>
+                                <div class="modal-body modalpopup">
+                                    <form id="AddQuestions" action="@Url.Action("AddQuestion","Survey")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-horizontal AddTemplateQuestions">
+
+                                            <input type="hidden" id="TemplateQuestionID" name="TemplateQuestionID" value="" />
+                                            <input type="hidden" id="TSurveyID" name="TSurveyID" value="" />
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="TQuestionText">Question Text</label>
+                                                <div class="col-md-10">
+                                                    <input class="form-control text-box single-line" id="TQuestionText" name="TQuestionText" type="text" required />
+                                                    <span class="field-validation-valid text-danger" data-valmsg-for="TQuestionText" data-valmsg-replace="true"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="QuestionResponseType">Question ResponseType</label>
+                                                <div class="col-md-10">
+                                                    <select class="form-control" name="ResponseType" id="ResponseType">
+                                                        @foreach (var item in ViewBag.ResponseTypes as IEnumerable<EventManagement.DataAccess.DataBase.Model.ResponseType>)
+                                                        {
+                                                            <option value="@item.ResponseTypeID"> @item.ResponseName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="Options">Options</label>
+                                                <div class="col-md-10" id="AddOptions">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <button type="button" class="btn btn-default" id="AddBtn">Add</button> &nbsp;
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> &nbsp;
+                                                    <button type="submit" class="btn btn-success">Submit</button> &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Survey" class="tab-pane fade">
+                <div class="row topbar">
+                    <div class="col-md-10">
+                        <br> <h2>Survey</h2> <br />
+                        <div class="col-md-10">
+                            <select class="form-control SurveyList" name="SurveyList" id="SurveyList">
+                                <option value="">New</option>
+
+                                @foreach (var item in ViewBag.SurveysList as IEnumerable<EventManagement.BusinessLogic.Models.SurveyList>)
+                                {
+                                    <option value="@item.SurveyID">@item.SurveyName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-10" id="CreateEditSurvey">
+                            <form action="@Url.Action("SaveSurvey","Survey")" method="post">
+
+                                <input type="hidden" id="SQuestionID" name="SQuestionID" value="" />
+                                <input type="hidden" id="SurveyID" name="SurveyID" value="" />
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="SurveyName">Survey Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control text-box single-line" id="SurveyName" name="SurveyName" type="text" value="" />
+                                        <br />
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="SurveyName" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="SurveyLevel">Survey Level</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="SurveyLevel" id="SurveyLevel">
+                                            <option value="">--Select Level--</option>
+                                            <option>Event Level</option>
+                                            <option>Activity Level</option>
+                                            <option>App Level</option>
+                                            <option>Vendor Level</option>
+                                            <option>Sponsor Level</option>
+                                        </select>
+                                        <br />
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="SurveyLevel" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="SurveyDescription">Survey Description</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control text-box single-line" id="SurveyDescription" name="SurveyDescription" type="text" value="" />
+                                        <br />
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="SurveyDescription" data-valmsg-replace="true"></span>
+                                    </div>
+                                </div>
+
+                                <br />
+                                <div class="form-group surveyEvent" id="surveyEvent">
+                                    <label class="control-label col-md-2" for="SurveyEventID">Event</label>
+                                    <div class="col-xs-10">
+                                        <select class="form-control SurveyEventID" name="SurveyEventID" id="SurveyEventID">
+                                            @foreach (var item in ViewBag.Events as IEnumerable<EventManagement.BusinessLogic.Models.EventSurveyData>)
+                                            {
+                                                <option value="@item.EventID"> @item.EventName</option>
+                                            }
+                                        </select>
+                                        <br />
+                                    </div>
+                                    <br />
+                                </div>
+
+                                <div class="form-group surveyEventActivity">
+                                    <label class="control-label col-md-2" for="SurveyEventActivityID">Activity</label>
+                                    <div class="col-xs-10">
+                                        <select class="form-control" name="SurveyEventActivityID" id="SurveyEventActivityID">
+                                            @foreach (var item in ViewBag.AllActivities as IEnumerable<EventManagement.BusinessLogic.Models.SurveyEventActivities>)
+                                            {
+                                                <option value="@item.ActivityId"> @item.ActivityName</option>
+                                            }
+                                        </select>
+                                        <br />
+                                    </div>
+                                    <br />
+                                </div>
+
+                                <div class="form-group surveyVendors">
+                                        <label class="control-label col-md-2" for="surveyVendorID">Vendors</label>
+                                        <div class="col-xs-10">
+                                            <select class="form-control" name="surveyVendorID" id="surveyVendorID">
+                                                @foreach (var item in ViewBag.AllVendors as IEnumerable<EventManagement.BusinessLogic.Models.SurveyVendor>)
+                                                {
+                                                    <option value="@item.vendorID"> @item.vendorName</option>
+                                                }
+                                            </select>
+                                            <br />
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                <div class="form-group surveySponsors">
+                                        <label class="control-label col-md-2" for="surveySponsorID">Sponsors</label>
+                                        <div class="col-xs-10">
+                                            <select class="form-control" name="surveySponsorID" id="surveySponsorID">
+                                                @foreach (var item in ViewBag.AllSponsors as IEnumerable<EventManagement.BusinessLogic.Models.SurveySponsor>)
+                                                {
+                                                    <option value="@item.sponsorId"> @item.sponsorName</option>
+                                                }
+                                            </select>
+                                            <br />
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                <br />
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="SurveyTemplate">SurveyTemplate</label>
+                                    <div class="col-xs-10">
+                                        <select class="form-control SurveyTemplate" name="SurveyTemplate" id="SurveyTemplate">
+                                            <option value="">--Select Template--</option>
+                                            @foreach (var item in ViewBag.Templates as IEnumerable<EventManagement.DataAccess.DataBase.Model.TemplateSurvey>)
+                                            {
+                                                <option value="@item.TSurveyID"> @item.TSurveyName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <br />
+                                </div>
+                                <br />
+                                <div class="form-group" id="AddSQ">
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <br />
+                                        <input type="submit" class="btn btn-success" id="Savesurveydata" value="Save" /> &nbsp;
+                                        <input type="button" class="btn btn-success" data-toggle="modal" data-target="#AddSurveyQuestions" id="SurveyQuestion" value="Add Question" />&nbsp;
+                                        <input type="button" class="btn btn-danger" id="DeleteSurvey" value="Delete Survey" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal fade" id="AddSurveyQuestions" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Add/Edit Question</h4>
+                                    </div>
+                                    <div class="modal-body modalpopup">
+                                        <form id="SurveyQuestions" action="@Url.Action("AddSurveyQuestion","Survey")" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="form-horizontal">
+
+                                                <input type="hidden" id="SurveyQuestionID" name="SurveyQuestionID" value="" />
+                                                <input type="hidden" id="S_QID" name="S_QID" value="" />
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2" for="SQuestionText">Question Text</label>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control text-box single-line" id="SQuestionText" name="SQuestionText" type="text" required />
+                                                        <span class="field-validation-valid text-danger" data-valmsg-for="SQuestionText" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2" for="SQuestionResponseType">Question ResponseType</label>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control" name="SQuestionResponseType" id="SQuestionResponseType">
+                                                            @foreach (var item in ViewBag.ResponseTypes as IEnumerable<EventManagement.DataAccess.DataBase.Model.ResponseType>)
+                                                            {
+                                                                <option value="@item.ResponseTypeID"> @item.ResponseName</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2" for="AddSurveyQuestionOptions">Options</label>
+                                                    <div class="col-md-10" id="AddSurveyQuestionOptions" name="AddSurveyQuestionOptions">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <input type="button" class="btn btn-default" id="AddSurveyQuestionsBtn" value="Add" /> &nbsp;
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> &nbsp;
+                                                        <button type="submit" class="btn btn-success">Submit</button> &nbsp;
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

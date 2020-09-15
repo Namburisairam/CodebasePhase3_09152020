@@ -1,0 +1,347 @@
+﻿@model IEnumerable<FloorRegionMapping>
+@{
+    ViewBag.Title = "FloorMapDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var floorMapID = ViewContext.RouteData.Values["ID"];
+    var eventID = Request.QueryString["eventID"];
+}
+<style>
+    .floor-map-btn-container {
+        padding: 5px;
+    }
+</style>
+@section Script{
+    <script src="~/Scripts/fabric.min.js"></script>
+    <script>
+        (function () {
+            $(document).ready(function () {
+                var canvas = new fabric.Canvas('canvas');
+                var factor, drawingBox, isDrawing, goodtop, goodleft;
+                var canvasImageBoundries = {};
+                var floorMapBoxes = @Html.Raw( @Json.Encode(Model.Select( x=> new {
+                                   x = x.X,
+                                   y = x.Y,
+                                   width = x.Width,
+                                   height = x.height,
+                                   floorLocationID = x.FloorMapLocation?.ID,
+                                   floorLocationName = x.FloorMapLocation?.Location
+                               })) );
+
+                fabric.Image.fromURL('@MvcCustom.ImagePath(ViewBag.FloorImage)', function (img) {
+                    canvas.setBackgroundImage(img, function (img) {
+
+                        factor = Math.min(canvas.width / img.width, canvas.height / img.height);
+
+                        canvasImageBoundries.width = img.width * factor;
+                        canvasImageBoundries.height = img.height * factor;
+
+                        canvas.renderAll.apply(canvas);
+                        var relativeCoordinates = _.map(floorMapBoxes, function (box) {
+                            var obj = _.clone(box);
+                            obj.x = obj.x * factor;
+                            obj.y = obj.y * factor;
+                            obj.width = obj.width * factor;
+                            obj.height = obj.height * factor;
+                            return obj;
+                        });
+                        _.forEach(relativeCoordinates, function (box,index) {
+                            createRectGroup(box);
+                        });
+                    }, {
+                            originX: 'left',
+                            originY: 'top',
+                            scaleX: Math.min(canvas.width / img.width, canvas.height / img.height),
+                            scaleY: Math.min(canvas.width / img.width, canvas.height / img.height)
+                        });
+                });
+
+                canvas.on('mouse:down', function (option) {
+
+                    if (option.target) {
+                        return;
+                    } else {
+                        var startY = option.e.offsetY,
+                            startX = option.e.offsetX;
+                        var box = {
+                            x: startX,
+                            y: startY,
+                            width: 0,
+                            height: 0,
+                            floorLocationID: null,
+                            floorLocationName: null
+                        };
+                        createRectGroupOnMouseMove(box)
+                    }
+                });
+
+                function createRectGroup(box) {
+                    var rect = new fabric.Rect({
+                        width: box.width,
+                        height: box.height,
+                        fill: 'rgba(128, 128, 128,0.5)',
+                        stroke: 'red',
+                        strokewidth: 4,
+                        originX: 'left',
+                        originY: 'top'
+                    });
+
+                    var text = new fabric.Text(box.floorLocationName || '', {
+                        fontSize: 16,
+                        fill: 'yellow'
+                    });
+
+                    var group = new fabric.Group([rect, text], {
+                        top: box.y,
+                        left: box.x,
+                        borderColor: 'red',
+                        cornerColor: 'green',
+                        cornerSize: 6,
+                        hasRotatingPoint: false,
+                        transparentCorners: false,
+                        noScaleCache: false,
+                        floorLocationID: box.floorLocationID,
+                        floorLocationName: box.floorLocationName
+                    });
+                    canvas.add(group);
+                    return group;
+                }
+
+                function createRectGroupOnMouseMove(box) {
+                    drawingBox = box;
+                    canvas.on('mouse:move', function (option) {
+                        var e = option.e;
+                        drawingBox.width = e.offsetX - box.x;
+                        drawingBox.height = e.offsetY - box.y;
+                        isDrawing = true;
+                    });
+                }
+
+                //TODO: Need to mouse rectangle creation to a common function
+                canvas.on('mouse:up', function () {
+                    canvas.off('mouse:move');
+                    if (!isDrawing) {
+                        return;
+                    }
+                    if (drawingBox.width < 3 || drawingBox.height < 3) {
+                        isDrawing = false;
+                        return;
+                    }
+                    isDrawing = false;
+                    //canvas.off('mouse:move');
+
+                    var rect = new fabric.Rect({
+                        width: drawingBox.width,
+                        height: drawingBox.height,
+                        fill: 'rgba(128, 128, 128,0.5)',
+                        stroke: 'red',
+                        strokewidth: 4,
+                        originX: 'left',
+                        originY: 'top',
+                    });
+
+                    var text = new fabric.Text(drawingBox.floorLocationName || '', {
+                        fontSize: 16,
+                        fill: 'yellow'
+                    });
+
+                    var group = new fabric.Group([rect, text], {
+                        top: drawingBox.y,
+                        left: drawingBox.x,
+                        originX: 'left',
+                        originY: 'top',
+                        borderColor: 'red',
+                        cornerColor: 'green',
+                        cornerSize: 6,
+                        transparentCorners: false,
+                        hasRotatingPoint: false,
+                        noScaleCache: false,
+                        floorLocationID: drawingBox.floorLocationID,
+                        floorLocationName: drawingBox.floorLocationName
+                    });
+                    rect.setCoords();
+                    canvas.setActiveObject(group);
+                    canvas.add(group);
+                    //canvas.renderAll();
+                    limitBoxBoundries({target : group});
+                });
+
+                canvas.on('selection:created', function (options) {
+                    handleBtnsStripEnable(false);
+                    floorlocationSelection();
+                   
+                });
+
+               function floorlocationSelection() {
+
+                   var floorLocations = @Html.Raw(Json.Encode(ViewBag.FloorLocations))
+                       console.log(floorLocations);
+                }
+
+                canvas.on('selection:cleared', function (options) {
+                    handleBtnsStripEnable(true);
+                });
+
+                canvas.on("object:moving", limitBoxBoundries);
+                canvas.on('object:scaling', limitBoxBoundries);
+
+                function limitBoxBoundries(e) {
+                    // https://stackoverflow.com/questions/22910496/move-object-within-canvas-boundary-limit/22987882
+
+                    var obj = e.target;
+                     // if object is too big ignore
+                    if(obj.currentHeight > canvasImageBoundries.height || obj.currentWidth > canvasImageBoundries.width){
+                        return;
+                    }        
+                    obj.setCoords();        
+                    // top-left  corner
+                    if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+                        obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+                        obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+                    }
+                    // bot-right corner
+                    if(obj.getBoundingRect().top+obj.getBoundingRect().height  > canvasImageBoundries.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > canvasImageBoundries.width){
+                        obj.top = Math.min(obj.top, canvasImageBoundries.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+                        obj.left = Math.min(obj.left, canvasImageBoundries.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+                    };
+                }
+
+                function handleBtnsStripEnable(isDisabled) {
+                    $('#btnMap').prop('disabled', isDisabled);
+                    $('#boxesDelete').prop('disabled', isDisabled);
+                }
+
+                $('#boxesDelete').click(function () {
+                    canvas.remove(canvas.getActiveObject());
+                });
+
+                $('#saveFloorMapBoxes').click(function () {
+                    if (hasEmptyMappings() || hasDuplicateMappings()) {
+                        alert("Empty or Duplicate mappings are not allowed");
+                        return;
+                    }
+                    var coords = getCanvasCords();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("SaveFloorMapMappings", "Events")',
+                        dataType: 'json',
+                        data: { fMID: @floorMapID, eventID : @eventID , floorMapBoxes : coords },
+                        success: function (result) {
+                            alert("Saved");
+                        }
+                    });
+                });
+
+                $('#addFloorLocation').click(function () {
+                    var locationId = parseInt($('#floorLocation').val());
+                    if (floorLocationMappingExists(locationId)) {
+                        alert("Duplicate Mappings are not allowed");
+                        return;
+                    }
+                    var locationName = $("#floorLocation option:selected").text();
+                    var selectedBox = canvas.getActiveObject();
+                    selectedBox.floorLocationID = locationId;
+                    selectedBox.floorLocationName = locationName;
+                    selectedBox.item(1).set({ text: locationName });
+                    canvas.renderAll.apply(canvas);
+                    $('#myModal').modal('hide');
+
+                });
+
+                $('#btnMap').click(function () {
+                    var selectedObj = canvas.getActiveObject();
+                    $('#floorLocation').val(selectedObj.floorLocationID).trigger("chosen:updated");
+                });
+
+                function hasDuplicateMappings() {
+                    var coords = getCanvasCords();
+
+                    var floorMapIds = _.filter( _.map(coords, function (obj) {
+                        return obj.FloorLocationID;
+                    }), function (obj) {
+                            return !!obj.FloorLocationID;
+                        });
+
+                    return _.some(floorMapIds, function (elt, index) {
+                        return array.indexOf(elt) !== index;
+                    });
+                }
+
+                function hasEmptyMappings() {
+                    var coords = getCanvasCords();
+                    return _.some(coords, function (obj) {
+                        return !obj.FloorLocationID
+                    });
+                }
+
+                function floorLocationMappingExists(FloorLocationID) {
+                    var coords = getCanvasCords();
+                    return _.some(coords , function (obj) {
+                            return obj.FloorLocationID === FloorLocationID;
+                    });
+                }
+
+                function getCanvasCords() {
+                    var coords = [];
+                    canvas.forEachObject(function (obj) {
+                        var prop = {
+                            X: Math.round(obj.left/factor),
+                            Y: Math.round(obj.top/factor),
+                            Width: Math.round(obj.getScaledWidth()/factor),
+                            Height: Math.round(obj.getScaledHeight() / factor),
+                            FloorLocationID: obj.floorLocationID
+                        };
+                        coords.push(prop);
+                    });
+                    return coords;
+                }
+
+            });
+        })();
+
+        
+    </script>
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                <div class="floor-map-btn-container">
+                    <button class="btn btn-success" id="btnMap" data-toggle="modal" data-target="#myModal" disabled> Map </button>
+                    <button class="btn btn-danger" id="boxesDelete" disabled> Delete </button>
+                    <button class="btn btn-info" id="saveFloorMapBoxes"> Save </button>
+                </div>
+                <div><canvas id="canvas" width="900" height="700" style="border: 1px solid red;"></canvas></div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Map Floor Region</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2"> Floor Location </label>
+                        <div class="col-md-10">
+                            @Html.DropDownList("LocationID", new SelectList(ViewBag.FloorLocations, "ID", "Location"), "Select Floor Location", new { id = "floorLocation" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" value="Create" class="btn btn-primary" id="addFloorLocation" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

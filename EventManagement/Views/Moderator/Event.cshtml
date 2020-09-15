@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Event";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Script{
+    <script>
+        if ('@ViewBag.Error' != '') {
+            alert('@ViewBag.Error')
+        }
+        $('.approve').click(function () {
+            var id = $(this).attr("data-id")
+            $(this).removeAttr("data-id")
+            $(this).text('Approved');
+            if (id)
+                $.ajax({
+                    url: '@Url.Action("ApproveComment")/' + id,
+                    success: function (result) {
+                        if (result) {
+                            $.notify('Comment Approved', 'success')
+                            $(this).remove();
+                        }
+                        else
+                            alert('something went wrong');
+                    }
+                })
+            else
+                $.notify('Commment already Approved', 'success');
+        })
+
+    </script>
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row spaceing">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-10">
+                            <h3 class="box-title">New Event</h3>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-4">
+
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        Attendee
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Image
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.EventComments)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Attende.Name
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+                                        <td>
+                                            <img height="50" width="50" src="@MvcCustom.ImagePath(item.URL)" />
+                                        </td>
+                                        <td>
+                                            @(item.Status == true ? "Approved" : "Pending Approval")
+                                        </td>
+                                        <td>
+                                            @if (!(item.Status == null) && item.Status == true)
+                                            {
+                                                <a href="#" class="approve" data-id="@item.ID">Pending</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </section>
+</div>
+

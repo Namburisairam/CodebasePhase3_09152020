@@ -1,0 +1,91 @@
+﻿@model IEnumerable<EventManagement.DataAccess.DataBase.Model.Attende>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] roles = { "Admin", "Event Manager", "Moderator" };
+}
+
+<script src="~/Scripts/sorttable.js"></script>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="row topbar">
+            <div class="col-md-10">
+                <h2>All Users</h2>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-primary" style="width:100%" href='@Url.Action("Create")'>Create New</a>
+            </div>
+            @*<div class="col-md-2">
+                    <text class="btn btn-primary button" data-toggle="modal" data-target="#myModal1">Upload Events</text>
+                </div>*@
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row spaceing">
+            <div class="box box-primary">
+                @*<p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>*@
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Lastname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AdminInfo.Password)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AdminInfo.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AdminInfo.UserRole)
+                        </th>
+                        <th>
+                          Actions
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lastname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AdminInfo.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AdminInfo.PhoneNumber)
+                            </td>
+                            <td>
+                              @roles[item.AdminInfo.UserRole]
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Create", new { id = item.ID }) |                                
+                              @Html.ActionLink("Delete", "DeleteUser", new { id = item.ID },new { @class = "btnDelete" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,46 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Photo
+
+@{
+    ViewBag.Title = "Photo view";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content-wrapper">
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="col-md-10">
+                    <h3 class="box-title">Selected Photo</h3>
+                </div>
+                <div class="col-md-2" style="text-align:right">
+                    <a href="/events">Back to Event</a>
+                </div>
+            </div>
+            <img src="@MvcCustom.ImagePath(Model.URL)" class="spaceing" style="max-width:95%; max-height:500px" />
+            @using (Html.BeginForm("EditImageDetails", "Photo", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+        <div class="row form-horizontal spaceing">
+            <input type="hidden" name="photoID" value="@Model.ID" />
+            <div class="form-group">
+                <label class="control-label col-md-2">Photo Description</label>
+                <div class="col-md-8">
+                    @Html.TextAreaFor(x => x.Description, htmlAttributes: new { @class = "form-control", id = "AlbumDescription" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2"> Change Album</label>
+                <div class="col-md-8">
+                    @Html.DropDownList("AlbumID", new SelectList(Model.Event.PhotoAlbums, "Id", "AlbumName"), "No Album", htmlAttributes: new { @class = "form-control", id = "AlbumID" })
+                </div>
+            </div>
+            @if ((@ViewBag.AppUser as EventManagement.DataAccess.DataBase.Model.Attende).AdminInfo?.UserRole == (int)CommonHelpers.enUserRole.EventManager)
+            {
+                <input type="hidden" value="true" name="IsEventManager" />
+            }
+            <button type="submit" id="submitAlbum" class="btn btn-info col-md-offset-2">Submit</button>
+        </div>
+            }
+        </div>
+    </section>
+</div>
+

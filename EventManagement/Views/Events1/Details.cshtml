@@ -1,0 +1,162 @@
+﻿@model EventManagement.DataAccess.DataBase.Model.Event
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ModeratePost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModeratePost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GalacticEventId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GalacticEventId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableThemes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableThemes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableActivity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableActivity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableQrCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableQrCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableAttendees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableAttendees)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableFloormap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableFloormap)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnablePhotos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnablePhotos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableSponsor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableSponsor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableComments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableComments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableGoogleApi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableGoogleApi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.allow_bookmark)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.allow_bookmark)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventImage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableSocialScreen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableSocialScreen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableSearchScreen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableSearchScreen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.FirstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
